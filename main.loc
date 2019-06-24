@@ -1,19 +1,19 @@
-source "C" from "cppbase.h" (
+source "Cpp" from "serializers.hpp" (
     "packDouble"
   , "unpackDouble"
   , "packInt"
   , "unpackInt"
   , "packString"
   , "unpackString"
-);
+)
 
-# JSON type is "std::string"
+# JSON input is char*, but the serialized results are std::string
 
 packDouble Cpp :: packs => "double" -> "std::string";
-unpackDouble Cpp :: unpacks => "std::string" -> "double";
+unpackDouble Cpp :: unpacks => "char*" -> "double";
 
 packInt Cpp :: packs => "int" -> "std::string";
-unpackInt Cpp :: unpacks => "std::string" -> "int";
+unpackInt Cpp :: unpacks => "char*" -> "int";
 
 packString Cpp :: packs => "std::string" -> "std::string";
-unpackString Cpp :: unpacks => "std::string" -> "std::string";
+unpackString Cpp :: unpacks => "char*" -> "std::string";
