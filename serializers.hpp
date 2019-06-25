@@ -10,6 +10,7 @@ std::string foreign_call(const char* cmd);
 std::string packDouble(double x);
 std::string packInt(int x);
 std::string packString(std::string x);
+std::string packBool(bool x);
 std::string packDoubles(std::vector<double> xs);
 std::string packInts(std::vector<int> xs);
 std::string packStrings(std::vector<std::string> xs);
@@ -17,6 +18,7 @@ std::string packStrings(std::vector<std::string> xs);
 double unpackDouble(const char* json);
 int unpackInt(const char* json);
 std::string unpackString(const char* x);
+bool unpackBool(const char* x);
 std::vector<double> unpackDoubles(const char* json);
 std::vector<int> unpackInts(const char* json);
 std::vector<std::string> unpackStrings(const char* json);
@@ -75,6 +77,26 @@ std::string unenclose(const char* xs, char a){
     return(unenclose(s, a));
 }
 
+std::string strip(std::string s){
+    while(s.size() > 0){
+        if(s[0] == ' '){
+            s.erase(0, 1);
+        } else {
+            break;
+        }
+    }
+    while(s.size() > 0){
+        if(s[s.size()-1] == ' '){
+            s.erase(s.size()-1);
+        } else {
+            break;
+        }
+    }
+    return(s);
+}
+
+
+// === Basic serialization functions ===
 
 std::string packDouble(double x){
     return(std::to_string(x));
@@ -85,6 +107,10 @@ std::string packInt(int x){
 std::string packString(std::string x){
     return("\"" + x + "\"");
 }
+std::string packBool(bool x){
+    return(x? "true" : "false");
+}
+
 
 double unpackDouble(const char* json){
     return(std::stod(json));
@@ -96,6 +122,11 @@ int unpackInt(const char* json){
 
 std::string unpackString(const char* x){
     return(unenclose(x, '"'));
+}
+
+bool unpackBool(const char* x){
+    std::string s(x);
+    return(s == "true" ? true : false);
 }
 
 
@@ -116,7 +147,17 @@ std::string packStrings(std::vector<std::string> xs){
     json += "]";
     return(json);
 }
-
+std::string packBools(std::vector<bool> xs){
+    std::string json = "[";
+    for(size_t i = 0; i < xs.size(); i++){
+        json += xs[i] ? "true" : "false"; 
+        if(i+1 < xs.size()){
+            json += ",";
+        }
+    }
+    json += "]";
+    return(json);
+}
 
 std::vector<double> unpackDoubles(const char* json){
     std::stringstream ss(unenclose(json, '[', ']'));
@@ -144,6 +185,13 @@ std::vector<int> unpackInts(const char* json){
     return(result);
 }
 
+// Gracefully handles strings with commas and escaped quotes.
+// If very forgiving of bad input, for example, all of these yield the same
+// result:
+//  ["a", "b", "c"]
+//  ["a" | "b" som stuff "c"]
+// It requires beginning and ending brackets. And then looks inside for quoted
+// strings.
 std::vector<std::string> unpackStrings(const char* json){
     std::string s = unenclose(json, '[', ']');
     std::vector<std::string> ss;
@@ -162,4 +210,17 @@ std::vector<std::string> unpackStrings(const char* json){
         }
     }
     return(ss);
+}
+
+std::vector<bool> unpackBools(const char* json){
+    std::stringstream ss(unenclose(json, '[', ']'));
+    std::vector<bool> result;
+    while(ss.good())
+    {
+        std::string substr;
+        std::getline(ss, substr, ',');
+        bool x = strip(substr) == "true" ? true : false;
+        result.push_back(x);
+    }
+    return(result);
 }
