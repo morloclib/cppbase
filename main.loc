@@ -5,11 +5,19 @@ source "Cpp" from "serializers.hpp" (
   , "unpackInt"
   , "packString"
   , "unpackString"
+  # hard-coded vectors (I need a generic way to handle these)
+  , "packDoubles"
+  , "unpackDoubles"
+  , "packInts"
+  , "unpackInts"
+  , "packStrings"
+  , "unpackStrings"
 )
 
 # JSON input is char*, but the serialized results are std::string
 
 packDouble Cpp :: packs => "double" -> "std::string";
+
 unpackDouble Cpp :: unpacks => "char*" -> "double";
 
 packInt Cpp :: packs => "int" -> "std::string";
@@ -17,3 +25,12 @@ unpackInt Cpp :: unpacks => "char*" -> "int";
 
 packString Cpp :: packs => "std::string" -> "std::string";
 unpackString Cpp :: unpacks => "char*" -> "std::string";
+
+packInts Cpp :: packs => "vector<int>" -> "std::string";
+unpackInts Cpp :: unpacks => "std::string" -> "vector<int>";
+
+packDoubles Cpp :: packs => "vector<double>" -> "std::string";
+unpackDoubles Cpp :: unpacks => "std::string" -> "vector<double>";
+
+packStrings Cpp :: packs => "vector<string>" -> "std::string";
+unpackStrings Cpp :: unpacks => "std::string" -> "vector<string>";

@@ -1,19 +1,30 @@
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <stdexcept>
 #include <stdio.h>
+#include <vector>
 
-std::string foreign_call(char* cmd);
+std::string foreign_call(const char* cmd);
 
 std::string packDouble(double x);
 std::string packInt(int x);
 std::string packString(std::string x);
+std::string packDoubles(std::vector<double> xs);
+std::string packInts(std::vector<int> xs);
+std::string packStrings(std::vector<std::string> xs);
 
-double unpackDouble(char* json);
-int unpackInt(char* json);
-std::string unpackString(char* x);
+double unpackDouble(const char* json);
+int unpackInt(const char* json);
+std::string unpackString(const char* x);
+std::vector<double> unpackDoubles(const char* json);
+std::vector<int> unpackInts(const char* json);
+std::vector<std::string> unpackStrings(const char* json);
 
-std::string foreign_call(char* cmd){
+
+// Handle foreign calls. This function is used inside of C++ manifolds. Any
+// changes in the name will require a mirrored change in the morloc code. 
+std::string foreign_call(const char* cmd){
     char buffer[256];
     std::string result = "";
     FILE* pipe = popen(cmd, "r");
@@ -24,27 +35,131 @@ std::string foreign_call(char* cmd){
     return(result);
 }
 
+// === UTILITIES ===
+
+// Wrap a vector as a JSON list
+template <class T>
+std::string asList(std::vector<T> xs){
+    std::string json = "[";
+    for(size_t i = 0; i < xs.size(); i++){
+        json += std::to_string(xs[i]);
+        if(i+1 < xs.size()){
+            json += ",";
+        }
+    }
+    json += "]";
+    return(json);
+}
+
+std::string unenclose(std::string s, char a, char b){
+    try {
+        if(s.size() < 2 || s[0] != a || s[s.size()-1] != b){
+            throw 1;
+        }
+    } catch (int e) {
+        std::cerr << "Expected string '" << s << "' to begin with "
+                  << a << " and end with " << b << std::endl;
+    }
+    std::string s2 = s.substr(1, s.size()-2);
+    return(s2);
+}
+std::string unenclose(std::string s, char a){
+    return(unenclose(s, a, a));
+}
+std::string unenclose(const char* xs, char a, char b){
+    std::string s(xs);
+    return(unenclose(s, a, b));
+}
+std::string unenclose(const char* xs, char a){
+    std::string s(xs);
+    return(unenclose(s, a));
+}
+
+
 std::string packDouble(double x){
     return(std::to_string(x));
 }
-
-double unpackDouble(char* json){
-    return(std::stod(json));
-}
-
 std::string packInt(int x){
     return(std::to_string(x)); 
 }
+std::string packString(std::string x){
+    return("\"" + x + "\"");
+}
 
-int unpackInt(char* json){
+double unpackDouble(const char* json){
+    return(std::stod(json));
+}
+
+int unpackInt(const char* json){
     return(std::stoi(json));
 }
 
-std::string packString(std::string x){
-    return(x);
+std::string unpackString(const char* x){
+    return(unenclose(x, '"'));
 }
 
-std::string unpackString(char* x){
-    std::string str(x);
-    return(str);
+
+std::string packDoubles(std::vector<double> xs){
+    return(asList<double>(xs));
+}
+std::string packInts(std::vector<int> xs){
+    return(asList<int>(xs));
+}
+std::string packStrings(std::vector<std::string> xs){
+    std::string json = "[";
+    for(size_t i = 0; i < xs.size(); i++){
+        json += xs[i]; 
+        if(i+1 < xs.size()){
+            json += ",";
+        }
+    }
+    json += "]";
+    return(json);
+}
+
+
+std::vector<double> unpackDoubles(const char* json){
+    std::stringstream ss(unenclose(json, '[', ']'));
+    std::vector<double> result;
+    while(ss.good())
+    {
+        std::string substr;
+        std::getline(ss, substr, ',');
+        double x = std::stod(substr);
+        result.push_back(x);
+    }
+    return(result);
+}
+
+std::vector<int> unpackInts(const char* json){
+    std::stringstream ss(unenclose(json, '[', ']'));
+    std::vector<int> result;
+    while(ss.good())
+    {
+        std::string substr;
+        std::getline(ss, substr, ',');
+        int x = std::stoi(substr);
+        result.push_back(x);
+    }
+    return(result);
+}
+
+std::vector<std::string> unpackStrings(const char* json){
+    std::string s = unenclose(json, '[', ']');
+    std::vector<std::string> ss;
+    bool inString = false;
+    size_t a = 1;
+    for(int i = 1; json[i] != 0; i++){
+        if(json[i] == '"' && json[i-1] != '\\'){
+            if(inString){
+                inString = false;
+                std::string s(json+a, i-a);
+                ss.push_back('"' + s + '"');
+            } else {
+                inString = true;
+                a = i+1;
+            }
+        }
+    }
+    return(ss);
 }
