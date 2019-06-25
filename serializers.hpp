@@ -9,18 +9,22 @@ std::string foreign_call(const char* cmd);
 
 std::string packDouble(double x);
 std::string packInt(int x);
+std::string packSizeT(size_t x);
 std::string packString(std::string x);
 std::string packBool(bool x);
 std::string packDoubles(std::vector<double> xs);
 std::string packInts(std::vector<int> xs);
+std::string packSizeTs(std::vector<size_t> xs);
 std::string packStrings(std::vector<std::string> xs);
 
 double unpackDouble(const char* json);
 int unpackInt(const char* json);
+size_t unpackSizeT(const char* json);
 std::string unpackString(const char* x);
 bool unpackBool(const char* x);
 std::vector<double> unpackDoubles(const char* json);
 std::vector<int> unpackInts(const char* json);
+std::vector<size_t> unpackSizeTs(const char* json);
 std::vector<std::string> unpackStrings(const char* json);
 
 
@@ -104,6 +108,9 @@ std::string packDouble(double x){
 std::string packInt(int x){
     return(std::to_string(x)); 
 }
+std::string packSizeT(size_t x){
+    return(std::to_string(x)); 
+}
 std::string packString(std::string x){
     return("\"" + x + "\"");
 }
@@ -117,6 +124,10 @@ double unpackDouble(const char* json){
 }
 
 int unpackInt(const char* json){
+    return(std::stoi(json));
+}
+
+size_t unpackSizeT(const char* json){
     return(std::stoi(json));
 }
 
@@ -135,6 +146,9 @@ std::string packDoubles(std::vector<double> xs){
 }
 std::string packInts(std::vector<int> xs){
     return(asList<int>(xs));
+}
+std::string packSizeTs(std::vector<size_t> xs){
+    return(asList<size_t>(xs));
 }
 std::string packStrings(std::vector<std::string> xs){
     std::string json = "[";
@@ -175,6 +189,19 @@ std::vector<double> unpackDoubles(const char* json){
 std::vector<int> unpackInts(const char* json){
     std::stringstream ss(unenclose(json, '[', ']'));
     std::vector<int> result;
+    while(ss.good())
+    {
+        std::string substr;
+        std::getline(ss, substr, ',');
+        int x = std::stoi(substr);
+        result.push_back(x);
+    }
+    return(result);
+}
+
+std::vector<size_t> unpackSizeTs(const char* json){
+    std::stringstream ss(unenclose(json, '[', ']'));
+    std::vector<size_t> result;
     while(ss.good())
     {
         std::string substr;

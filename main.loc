@@ -3,6 +3,8 @@ source "Cpp" from "serializers.hpp" (
   , "unpackDouble"
   , "packInt"
   , "unpackInt"
+  , "packSizeT"
+  , "unpackSizeT"
   , "packString"
   , "unpackString"
   # hard-coded vectors (I need a generic way to handle these)
@@ -10,6 +12,8 @@ source "Cpp" from "serializers.hpp" (
   , "unpackDoubles"
   , "packInts"
   , "unpackInts"
+  , "packSizeTs"
+  , "unpackSizeTs"
   , "packStrings"
   , "unpackStrings"
 )
@@ -23,11 +27,17 @@ unpackDouble Cpp :: unpacks => "char*" -> "double";
 packInt Cpp :: packs => "int" -> "std::string";
 unpackInt Cpp :: unpacks => "char*" -> "int";
 
+packSizeT Cpp :: packs => "size_t" -> "std::string";
+unpackSizeT Cpp :: unpacks => "char*" -> "size_t";
+
 packString Cpp :: packs => "std::string" -> "std::string";
 unpackString Cpp :: unpacks => "char*" -> "std::string";
 
 packInts Cpp :: packs => "vector<int>" -> "std::string";
 unpackInts Cpp :: unpacks => "std::string" -> "vector<int>";
+
+packSizeTs Cpp :: packs => "vector<size_t>" -> "std::string";
+unpackSizeTs Cpp :: unpacks => "std::string" -> "vector<size_t>";
 
 packDoubles Cpp :: packs => "vector<double>" -> "std::string";
 unpackDoubles Cpp :: unpacks => "std::string" -> "vector<double>";
