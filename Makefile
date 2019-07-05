@@ -1,5 +1,5 @@
 all:
-	g++ -Wall serializers.cpp serializers.hpp
+	g++ -Wall test-core.cpp core.hpp
 
 clean:
 	rm -f *gch a.out

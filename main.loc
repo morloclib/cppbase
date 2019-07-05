@@ -1,3 +1,15 @@
+source "Cpp" from "core.hpp" (
+    "map"
+  , "zipWith"
+  , "fold"
+  , "enumerateWith"
+)
+
+map :: (a -> b) -> [a] -> b
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+fold :: (b -> a -> b) -> b -> [a] -> b
+enumerateWith :: (a -> Int -> b) -> [a] -> [b]
+
 source "Cpp" from "serializers.hpp" (
     "packDouble"
   , "unpackDouble"
