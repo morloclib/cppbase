@@ -1,3 +1,5 @@
+module cppbase {
+
 source "Cpp" from "core.hpp" (
     "map"
   , "zipWith"
@@ -56,3 +58,5 @@ unpackDoubles Cpp :: unpacks => "std::string" -> "std::vector<double>";
 
 packStrings Cpp :: packs => "std::vector<string>" -> "std::string";
 unpackStrings Cpp :: unpacks => "std::string" -> "std::vector<string>";
+
+}
