@@ -1,5 +1,26 @@
 module cppbase {
 
+export enumerateWith
+export fold
+export map
+export packDouble
+export packDoubles
+export packInt
+export packInts
+export packSizeT
+export packSizeTs
+export packString
+export packStrings
+export unpackDouble
+export unpackDoubles
+export unpackInt
+export unpackInts
+export unpackSizeT
+export unpackSizeTs
+export unpackString
+export unpackStrings
+export zipWith
+
 source "Cpp" from "core.hpp" (
     "map"
   , "zipWith"
