@@ -5,10 +5,10 @@ source "Cpp" from "core.hpp" (
   , "enumerateWith"
 )
 
-map :: (a -> b), [a] -> b;
-zipWith :: (a, b -> c), [a], [b] -> [c];
-fold :: (b, a -> b), b, [a] -> b;
-enumerateWith :: (a, Int -> b), [a] -> [b];
+map :: (a -> b) -> [a] -> b;
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c];
+fold :: (b -> a -> b) -> b -> [a] -> b;
+enumerateWith :: (a -> Int -> b) -> [a] -> [b];
 
 source "Cpp" from "serializers.hpp" (
     "packDouble"
@@ -19,7 +19,7 @@ source "Cpp" from "serializers.hpp" (
   , "unpackSizeT"
   , "packString"
   , "unpackString"
-  # hard-coded vectors (I need a generic way to handle these)
+  -- hard-coded vectors (I need a generic way to handle these)
   , "packDoubles"
   , "unpackDoubles"
   , "packInts"
@@ -30,7 +30,7 @@ source "Cpp" from "serializers.hpp" (
   , "unpackStrings"
 )
 
-# JSON input is char*, but the serialized results are std::string
+-- JSON input is char*, but the serialized results are std::string
 
 packDouble Cpp :: packs => "double" -> "std::string";
 
