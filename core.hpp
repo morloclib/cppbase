@@ -1,3 +1,6 @@
+#ifndef __CORE_HPP__
+#define __CORE_HPP__
+
 #include <vector>
 #include <algorithm>
 
@@ -39,3 +42,5 @@ std::vector<B> enumerateWith(B(*f)(A,size_t), std::vector<A> xs){
     }
     return ys;
 }
+
+#endif

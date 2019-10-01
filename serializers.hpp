@@ -1,3 +1,6 @@
+#ifndef __SERIALIZERS_HPP__
+#define __SERIALIZERS_HPP__
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -251,3 +254,5 @@ std::vector<bool> unpackBools(const char* json){
     }
     return(result);
 }
+
+#endif
