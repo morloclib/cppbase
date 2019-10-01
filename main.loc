@@ -3,22 +3,6 @@ module cppbase {
 export enumerateWith
 export fold
 export map
-export packDouble
-export packDoubles
-export packInt
-export packInts
-export packSizeT
-export packSizeTs
-export packString
-export packStrings
-export unpackDouble
-export unpackDoubles
-export unpackInt
-export unpackInts
-export unpackSizeT
-export unpackSizeTs
-export unpackString
-export unpackStrings
 export zipWith
 
 source "Cpp" from "core.hpp" (
@@ -28,10 +12,17 @@ source "Cpp" from "core.hpp" (
   , "enumerateWith"
 )
 
-map :: (a -> b) -> [a] -> b;
-zipWith :: (a -> b -> c) -> [a] -> [b] -> [c];
-fold :: (b -> a -> b) -> b -> [a] -> b;
-enumerateWith :: (a -> Int -> b) -> [a] -> [b];
+map :: forall a b . (a -> b) -> [a] -> b;
+map Cpp :: forall a b . (a -> b) -> [a] -> b;
+
+zipWith :: forall a b c . (a -> b -> c) -> [a] -> [b] -> [c];
+zipWith Cpp :: forall a b c . (a -> b -> c) -> [a] -> [b] -> [c];
+
+fold :: forall a b . (b -> a -> b) -> b -> [a] -> b;
+fold Cpp :: forall a b . (b -> a -> b) -> b -> [a] -> b;
+
+enumerateWith :: forall a b . (a -> Int -> b) -> [a] -> [b];
+enumerateWith Cpp :: forall a b . (a -> Int -> b) -> [a] -> [b];
 
 source "Cpp" from "serializers.hpp" (
     "packDouble"
