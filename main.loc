@@ -5,7 +5,7 @@ export fold
 export map
 export zipWith
 
-source "Cpp" from "core.hpp" (
+source Cpp from "core.hpp" (
     "map"
   , "zipWith"
   , "fold"
@@ -13,18 +13,11 @@ source "Cpp" from "core.hpp" (
 )
 
 map :: forall a b . (a -> b) -> [a] -> b;
-map Cpp :: forall a b . (a -> b) -> [a] -> b;
-
 zipWith :: forall a b c . (a -> b -> c) -> [a] -> [b] -> [c];
-zipWith Cpp :: forall a b c . (a -> b -> c) -> [a] -> [b] -> [c];
-
 fold :: forall a b . (b -> a -> b) -> b -> [a] -> b;
-fold Cpp :: forall a b . (b -> a -> b) -> b -> [a] -> b;
-
 enumerateWith :: forall a b . (a -> Int -> b) -> [a] -> [b];
-enumerateWith Cpp :: forall a b . (a -> Int -> b) -> [a] -> [b];
 
-source "Cpp" from "serializers.hpp" (
+source Cpp from "serializers.hpp" (
     "packDouble"
   , "unpackDouble"
   , "packInt"
