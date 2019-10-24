@@ -12,10 +12,10 @@ source Cpp from "core.hpp" (
   , "enumerateWith"
 )
 
-map :: forall a b . (a -> b) -> [a] -> b;
-zipWith :: forall a b c . (a -> b -> c) -> [a] -> [b] -> [c];
-fold :: forall a b . (b -> a -> b) -> b -> [a] -> b;
-enumerateWith :: forall a b . (a -> Int -> b) -> [a] -> [b];
+map Cpp :: forall a b . (a -> b) -> "vector<$1>" a -> b;
+zipWith :: forall a b c . (a -> b -> c) -> "vector<$1>" a -> "vector<$1>" b -> "vector<$1>" c;
+fold :: forall a b . (b -> a -> b) -> b -> "vector<$1>" a -> b;
+enumerateWith :: forall a b . (a -> Int -> b) -> "vector<$1>" a -> "vector<$1>" b;
 
 source Cpp from "serializers.hpp" (
     "packDouble"
