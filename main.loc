@@ -52,16 +52,16 @@ unpackSizeT Cpp :: unpacks => "char*" -> "size_t";
 packString Cpp :: packs => "std::string" -> "std::string";
 unpackString Cpp :: unpacks => "char*" -> "std::string";
 
-packInts Cpp :: packs => "std::vector<int>" -> "std::string";
-unpackInts Cpp :: unpacks => "std::string" -> "std::vector<int>";
+packInts Cpp :: packs => "std::vector<$1>" int -> "std::string";
+unpackInts Cpp :: unpacks => "std::string" -> "std::vector<$1>" int;
 
-packSizeTs Cpp :: packs => "std::vector<size_t>" -> "std::string";
-unpackSizeTs Cpp :: unpacks => "std::string" -> "std::vector<size_t>";
+packSizeTs Cpp :: packs => "std::vector<$1>" size_t -> "std::string";
+unpackSizeTs Cpp :: unpacks => "std::string" -> "std::vector<$1>" size_t;
 
-packDoubles Cpp :: packs => "std::vector<double>" -> "std::string";
-unpackDoubles Cpp :: unpacks => "std::string" -> "std::vector<double>";
+packDoubles Cpp :: packs => "std::vector<$1>" double -> "std::string";
+unpackDoubles Cpp :: unpacks => "std::string" -> "std::vector<$1>" double;
 
-packStrings Cpp :: packs => "std::vector<string>" -> "std::string";
-unpackStrings Cpp :: unpacks => "std::string" -> "std::vector<string>";
+packStrings Cpp :: packs => "std::vector<$1>" string -> "std::string";
+unpackStrings Cpp :: unpacks => "std::string" -> "std::vector<$1>" string;
 
 }
