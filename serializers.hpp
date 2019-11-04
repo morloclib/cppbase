@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <vector>
 
-std::string foreign_call(const char* cmd);
+std::string foreign_call(std::string cmd);
 
 std::string packDouble(double x);
 std::string packInt(int x);
@@ -20,23 +20,23 @@ std::string packInts(std::vector<int> xs);
 std::string packSizeTs(std::vector<size_t> xs);
 std::string packStrings(std::vector<std::string> xs);
 
-double unpackDouble(const char* json);
-int unpackInt(const char* json);
-size_t unpackSizeT(const char* json);
-std::string unpackString(const char* x);
-bool unpackBool(const char* x);
-std::vector<double> unpackDoubles(const char* json);
-std::vector<int> unpackInts(const char* json);
-std::vector<size_t> unpackSizeTs(const char* json);
-std::vector<std::string> unpackStrings(const char* json);
+double unpackDouble(std::string json);
+int unpackInt(std::string json);
+size_t unpackSizeT(std::string json);
+std::string unpackString(std::string x);
+bool unpackBool(std::string x);
+std::vector<double> unpackDoubles(std::string json);
+std::vector<int> unpackInts(std::string json);
+std::vector<size_t> unpackSizeTs(std::string json);
+std::vector<std::string> unpackStrings(std::string json);
 
 
 // Handle foreign calls. This function is used inside of C++ manifolds. Any
 // changes in the name will require a mirrored change in the morloc code. 
-std::string foreign_call(const char* cmd){
+std::string foreign_call(std::string cmd){
     char buffer[256];
     std::string result = "";
-    FILE* pipe = popen(cmd, "r");
+    FILE* pipe = popen(cmd.c_str(), "r");
     while (fgets(buffer, sizeof buffer, pipe) != NULL) {
         result += buffer;
     }
@@ -72,16 +72,9 @@ std::string unenclose(std::string s, char a, char b){
     std::string s2 = s.substr(1, s.size()-2);
     return(s2);
 }
+
 std::string unenclose(std::string s, char a){
     return(unenclose(s, a, a));
-}
-std::string unenclose(const char* xs, char a, char b){
-    std::string s(xs);
-    return(unenclose(s, a, b));
-}
-std::string unenclose(const char* xs, char a){
-    std::string s(xs);
-    return(unenclose(s, a));
 }
 
 std::string strip(std::string s){
@@ -122,24 +115,39 @@ std::string packBool(bool x){
 }
 
 
-double unpackDouble(const char* json){
-    return(std::stod(json));
+double unpackDouble(std::string json){
+    double result;
+    try {
+        result = std::stod(json.c_str());
+    } catch (const std::invalid_argument&) {
+        std::cerr << "bad input to unpackDouble in C++";
+        std::cerr << " expected a double, got '" << json << "'" << std::endl;
+        throw;
+    }
+    return(result);
 }
 
-int unpackInt(const char* json){
-    return(std::stoi(json));
+int unpackInt(std::string json){
+    int result;
+    try {
+        result = std::stoi(json.c_str());
+    } catch (const std::invalid_argument&) {
+        std::cerr << "bad input to unpackInt in C++";
+        std::cerr << " expected a integer, got '" << json << "'" << std::endl;
+        throw;
+    }
+    return result;
 }
 
-size_t unpackSizeT(const char* json){
-    return(std::stoi(json));
+size_t unpackSizeT(std::string json){
+    return(std::stoi(json.c_str()));
 }
 
-std::string unpackString(const char* x){
-    return(unenclose(x, '"'));
+std::string unpackString(std::string json){
+    return(unenclose(json, '"'));
 }
 
-bool unpackBool(const char* x){
-    std::string s(x);
+bool unpackBool(std::string s){
     return(s == "true" ? true : false);
 }
 
@@ -176,7 +184,7 @@ std::string packBools(std::vector<bool> xs){
     return(json);
 }
 
-std::vector<double> unpackDoubles(const char* json){
+std::vector<double> unpackDoubles(std::string json){
     std::stringstream ss(unenclose(json, '[', ']'));
     std::vector<double> result;
     while(ss.good())
@@ -189,7 +197,7 @@ std::vector<double> unpackDoubles(const char* json){
     return(result);
 }
 
-std::vector<int> unpackInts(const char* json){
+std::vector<int> unpackInts(std::string json){
     std::stringstream ss(unenclose(json, '[', ']'));
     std::vector<int> result;
     while(ss.good())
@@ -202,7 +210,7 @@ std::vector<int> unpackInts(const char* json){
     return(result);
 }
 
-std::vector<size_t> unpackSizeTs(const char* json){
+std::vector<size_t> unpackSizeTs(std::string json){
     std::stringstream ss(unenclose(json, '[', ']'));
     std::vector<size_t> result;
     while(ss.good())
@@ -222,16 +230,17 @@ std::vector<size_t> unpackSizeTs(const char* json){
 //  ["a" | "b" som stuff "c"]
 // It requires beginning and ending brackets. And then looks inside for quoted
 // strings.
-std::vector<std::string> unpackStrings(const char* json){
+std::vector<std::string> unpackStrings(std::string json){
     std::string s = unenclose(json, '[', ']');
     std::vector<std::string> ss;
     bool inString = false;
     size_t a = 1;
-    for(int i = 1; json[i] != 0; i++){
-        if(json[i] == '"' && json[i-1] != '\\'){
+    const char* json_c = json.c_str();
+    for(int i = 1; json_c[i] != 0; i++){
+        if(json_c[i] == '"' && json_c[i-1] != '\\'){
             if(inString){
                 inString = false;
-                std::string s(json+a, i-a);
+                std::string s(json_c+a, i-a);
                 ss.push_back('"' + s + '"');
             } else {
                 inString = true;
@@ -242,7 +251,7 @@ std::vector<std::string> unpackStrings(const char* json){
     return(ss);
 }
 
-std::vector<bool> unpackBools(const char* json){
+std::vector<bool> unpackBools(std::string json){
     std::stringstream ss(unenclose(json, '[', ']'));
     std::vector<bool> result;
     while(ss.good())

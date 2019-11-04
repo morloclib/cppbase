@@ -52,16 +52,16 @@ source Cpp from "serializers.hpp" (
 
 packDouble Cpp :: packs => "double" -> "std::string";
 
-unpackDouble Cpp :: unpacks => "char*" -> "double";
+unpackDouble Cpp :: unpacks => "std::string" -> "double";
 
 packInt Cpp :: packs => "int" -> "std::string";
-unpackInt Cpp :: unpacks => "char*" -> "int";
+unpackInt Cpp :: unpacks => "std::string" -> "int";
 
 packSizeT Cpp :: packs => "size_t" -> "std::string";
-unpackSizeT Cpp :: unpacks => "char*" -> "size_t";
+unpackSizeT Cpp :: unpacks => "std::string" -> "size_t";
 
 packString Cpp :: packs => "std::string" -> "std::string";
-unpackString Cpp :: unpacks => "char*" -> "std::string";
+unpackString Cpp :: unpacks => "std::string" -> "std::string";
 
 packInts Cpp :: packs => "std::vector<$1>" int -> "std::string";
 unpackInts Cpp :: unpacks => "std::string" -> "std::vector<$1>" int;
