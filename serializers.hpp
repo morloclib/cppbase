@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <stdio.h>
 #include <vector>
+#include <iomanip>
+#include <limits>
 
 std::string foreign_call(std::string cmd);
 
@@ -49,15 +51,18 @@ std::string foreign_call(std::string cmd){
 // Wrap a vector as a JSON list
 template <class T>
 std::string asList(std::vector<T> xs){
-    std::string json = "[";
+
+    std::ostringstream json;
+
+    json << "[";
     for(size_t i = 0; i < xs.size(); i++){
-        json += std::to_string(xs[i]);
+        json << std::setprecision(std::numeric_limits<double>::digits10 + 2) << xs[i];
         if(i+1 < xs.size()){
-            json += ",";
+            json << ",";
         }
     }
-    json += "]";
-    return(json);
+    json << "]";
+    return(json.str());
 }
 
 std::string unenclose(std::string s, char a, char b){
@@ -99,13 +104,19 @@ std::string strip(std::string s){
 // === Basic serialization functions ===
 
 std::string packDouble(double x){
-    return(std::to_string(x));
+    std::ostringstream s;
+    s << std::setprecision(std::numeric_limits<double>::digits10 + 2) << x;
+    return(s.str());
 }
 std::string packInt(int x){
-    return(std::to_string(x)); 
+    std::ostringstream s;
+    s << x;
+    return(s.str());
 }
 std::string packSizeT(size_t x){
-    return(std::to_string(x)); 
+    std::ostringstream s;
+    s << x;
+    return(s.str());
 }
 std::string packString(std::string x){
     return("\"" + x + "\"");

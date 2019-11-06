@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <sstream>
 
 double inc(int x){
     double y = x + 1.0;
@@ -12,13 +13,17 @@ int add(int x, int y){
     return x + y;
 }
 
+
 std::string makeName(std::string s, size_t i){
-    s += "_" + std::to_string(i);
-    return s;
+    std::ostringstream output;
+    output << s << "_" << i;
+    return output.str();
 }
 
 std::string reverseInt(int x){
-    std::string s = std::to_string(x);
+    std::ostringstream output;
+    output << x;
+    std::string s = output.str();
     std::reverse(s.begin(), s.end());
     return s;
 }
