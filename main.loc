@@ -6,10 +6,10 @@ export map
 export zipWith
 
 source Cpp from "core.hpp" (
-    "map"
-  , "zipWith"
-  , "fold"
-  , "enumerateWith"
+    "morloc_map" as map
+  , "morloc_zipWith" as zipWith
+  , "morloc_fold" as fold
+  , "morloc_enumerateWith" as enumerateWith
 )
 
 map :: forall a b . (a -> b) -> [a] -> [b];
@@ -51,7 +51,6 @@ source Cpp from "serializers.hpp" (
 -- JSON input is char*, but the serialized results are std::string
 
 packDouble Cpp :: packs => "double" -> "std::string";
-
 unpackDouble Cpp :: unpacks => "std::string" -> "double";
 
 packInt Cpp :: packs => "int" -> "std::string";

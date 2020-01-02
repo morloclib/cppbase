@@ -31,10 +31,10 @@ std::string reverseInt(int x){
 int main(int argc, char * argv[]){
 
     std::vector<int> xs{12,23,134};
-    std::vector<double> ys = map(inc, xs);
-    std::vector<std::string> ss = map(reverseInt, xs);
+    std::vector<double> ys = morloc_map(inc, xs);
+    std::vector<std::string> ss = morloc_map(reverseInt, xs);
 
-    std::vector<int> zs = zipWith(add, xs, xs);
+    std::vector<int> zs = morloc_zipWith(add, xs, xs);
 
     std::cout << ys[0] << " " << ys[1] << " " << ys[2] << std::endl; 
     std::cout << ss[0] << " " << ss[1] << " " << ss[2] << std::endl;
@@ -42,7 +42,7 @@ int main(int argc, char * argv[]){
     std::cout << zs[0] << " " << zs[1] << " " << zs[2] << std::endl; 
 
     std::vector<std::string> bases{"asdf", "qwer", "wert"};
-    std::vector<std::string> names = enumerateWith(makeName, bases);
+    std::vector<std::string> names = morloc_enumerateWith(makeName, bases);
     
     std::cout << names[0] << " " << names[1] << " " << names[2] << " " << std::endl;
 

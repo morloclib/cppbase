@@ -5,14 +5,14 @@
 #include <algorithm>
 
 template <class A, class B>
-std::vector<B> map(B(*f)(A), const std::vector<A> &xs){
+std::vector<B> morloc_map(B(*f)(A), const std::vector<A> &xs){
     std::vector<B> ys(xs.size());
     std::transform(xs.begin(), xs.end(), ys.begin(), f);
     return ys;
 }
 
 template <class A, class B, class C>
-std::vector<C> zipWith(
+std::vector<C> morloc_zipWith(
         C(*f)(A,B),
         const std::vector<A> &xs,
         const std::vector<B> &ys
@@ -27,7 +27,7 @@ std::vector<C> zipWith(
 }
 
 template <class A, class B>
-B fold(B(*f)(B,A), B y, const std::vector<A> xs){
+B morloc_fold(B(*f)(B,A), B y, const std::vector<A> xs){
     for(size_t i=0; i < xs.size(); i++){
         y = f(y, xs[i]);
     }
@@ -35,7 +35,7 @@ B fold(B(*f)(B,A), B y, const std::vector<A> xs){
 }
 
 template <class A, class B>
-std::vector<B> enumerateWith(B(*f)(A,size_t), std::vector<A> xs){
+std::vector<B> morloc_enumerateWith(B(*f)(A,size_t), std::vector<A> xs){
     std::vector<B> ys(xs.size());
     for(size_t i = 0; i < xs.size(); i++){
        ys[i] = f(xs[i], i);  
