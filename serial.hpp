@@ -377,4 +377,36 @@ std::tuple<A,B> unpackTuple2(std::string json, A a, B b){
     return x;
 }
 
+std::string pack(std::string x){
+    return x;
+}
+
+std::string pack(bool x){
+    if(x){
+        return "true";    
+    } else {
+        return "false";
+    }
+}
+
+std::string pack(double x){
+    return packDouble(x);
+}
+
+std::string pack(int x){
+    return packInt(x);
+}
+
+template <class A, class B>
+std::string pack(std::tuple<A,B> x){
+    std::stringstream json;
+    json << "[" << pack(std::get<0>(x)) << "," << pack(std::get<1>(x)) << "]" << std::endl;
+    return json.str();
+}
+
+template <class A, class B>
+std::string packTuple2(std::tuple<A,B> x){
+    return pack(x);
+}
+
 #endif

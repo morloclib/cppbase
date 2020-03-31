@@ -111,7 +111,7 @@ unpackDoubles Cpp :: unpacks => "std::string" -> "std::vector<$1>" double;
 packStrings Cpp :: packs => "std::vector<$1>" string -> "std::string";
 unpackStrings Cpp :: unpacks => "std::string" -> "std::vector<$1>" string;
 
-packTuple2 Cpp :: packs => forall a b   . "std::tuple<$1,$2>"    a b   -> "std::string";
-unpackTuple2 Cpp :: unpacks => forall a b   . "std::string" -> "std::tuple<$1,$2>" a b;
+packTuple2 Cpp :: packs => forall a b . "std::tuple<$1,$2>" a b -> "std::string";
+unpackTuple2 Cpp :: unpacks => forall a b . "std::string" -> "std::tuple<$1,$2>" a b;
 
 }

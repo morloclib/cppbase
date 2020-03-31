@@ -13,6 +13,7 @@ int main(int argc, char * argv[]){
               << ", (" << std::get<0>(std::get<1>(tuple2))
               << ", " << std::get<1>(std::get<1>(tuple2))
               << "))" << std::endl;
+    std::cout << packTuple2(unpackTuple2("[true, [42, false]]", a, b)) << std::endl;
     // single value
     std::cout << unpackInt("42") << std::endl;
     std::cout << unpackInt("-42") << std::endl;
