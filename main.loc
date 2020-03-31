@@ -63,7 +63,7 @@ enumerateWith     :: forall a b . (a -> Int -> b) -> [a] -> [b];
 enumerateWith Cpp :: forall a b . (a -> "int" -> b) -> "std::vector<$1>" a
                                                     -> "std::vector<$1>" b;
 
-source Cpp from "serializers.hpp" (
+source Cpp from "serial.hpp" (
     "packDouble"
   , "unpackDouble"
   , "packInt"
