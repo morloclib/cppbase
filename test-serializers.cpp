@@ -4,6 +4,15 @@
 #include "serializers.hpp"
 
 int main(int argc, char * argv[]){
+
+    // parser a tuple
+    bool a;
+    std::tuple<double, bool> b;
+    std::tuple<bool,std::tuple<double, bool>> tuple2 = unpackTuple2("[true, [42, false]]", a, b);
+    std::cout << "(" << std::get<0>(tuple2)
+              << ", (" << std::get<0>(std::get<1>(tuple2))
+              << ", " << std::get<1>(std::get<1>(tuple2))
+              << "))" << std::endl;
     // single value
     std::cout << unpackInt("42") << std::endl;
     std::cout << unpackInt("-42") << std::endl;

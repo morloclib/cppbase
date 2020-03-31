@@ -5,6 +5,31 @@
 #include <algorithm>
 
 template <class A, class B>
+double morloc_add(A x, B y){
+    return x + y;
+}
+
+template <class A, class B>
+double morloc_sub(A x, B y){
+    return x - y;
+}
+
+template <class A, class B>
+double morloc_mul(A x, B y){
+    return x * y;
+}
+
+template <class A, class B>
+double morloc_div(A x, B y){
+    return x / y;
+}
+
+template <class A, class B>
+double morloc_mod(A x, B y){
+    return x % y;
+}
+
+template <class A, class B>
 std::vector<B> morloc_map(B(*f)(A), const std::vector<A> &xs){
     std::vector<B> ys(xs.size());
     std::transform(xs.begin(), xs.end(), ys.begin(), f);

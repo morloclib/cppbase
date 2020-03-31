@@ -100,6 +100,30 @@ std::string strip(std::string s){
     return(s);
 }
 
+// parse sequences of digits from a larger string
+// used as part of a larger number parser
+std::string nat_str(std::string json, size_t &i){
+    std::string num = "";
+    while(json[i] >= '0' && json[i] <= '9'){
+        num += json[i];
+        i++;
+    }
+    return num;
+}
+
+// match a constant string, nothing is consumed on failure 
+bool match(const std::string json, const std::string pattern, size_t &i){
+    for(size_t j = 0; j < pattern.size(); j++){
+        if(j + i >= json.size()){
+            return false;
+        }
+        if(json[j + i] != pattern[j]){
+            return false;
+        }
+    }
+    i += pattern.size();
+    return true;
+}
 
 // === Basic serialization functions ===
 
@@ -273,6 +297,84 @@ std::vector<bool> unpackBools(std::string json){
         result.push_back(x);
     }
     return(result);
+}
+
+// combinator parser for bool
+void unpack(std::string json, size_t &i, bool &x){
+    if(match(json, "true", i)){
+        x = true;
+    }
+    else if(match(json, "false", i)){
+        x = false;
+    }
+}
+
+// combinator parser for double
+void unpack(std::string json, size_t &i, double &x){
+    std::string num = "";
+    if(json[i] == '-'){
+        num = "";
+        i++;
+    }
+    num += nat_str(json, i);
+    if(json[i] == '.'){
+        i++;
+        num += '.';
+        num += nat_str(json, i);
+    }
+    x = unpackDouble(num);
+}
+
+// combinator parser for 2-tuples
+template <class A, class B>
+void unpack(std::string json, size_t &i, std::tuple<A,B> &x){
+    A a;
+    B b;
+    try
+    {
+        if(json[i] == '['){
+            i++;
+        } else {
+            throw 1;
+        }
+
+        while(json[i] == ' ') i++;
+
+        // read first parser element
+        unpack(json, i, a);
+
+        while(json[i] == ' ') i++;
+
+        if(json[i] == ','){
+            i++;
+        } else {
+            throw 1;
+        }
+        while(json[i] == ' ') i++;
+
+        // read second parser element
+        unpack(json, i, b);
+
+        while(json[i] == ' ') i++;
+
+        if(json[i] != ']'){
+            throw 1;
+        }
+    }
+    catch (int e)
+    {
+        std::cerr << "Parse error in unpackTuple2 at character: " << json[i] << std::endl;
+    }
+    x = std::tuple<A,B>{a, b}; 
+}
+
+// Top level handler for 2-tuple containers
+template <class A, class B>
+std::tuple<A,B> unpackTuple2(std::string json, A a, B b){
+    size_t i = 0;
+    std::tuple<A,B> x;
+    unpack(json, i, x);
+    return x;
 }
 
 #endif

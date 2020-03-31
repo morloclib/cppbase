@@ -4,13 +4,48 @@ export enumerateWith
 export fold
 export map
 export zipWith
+export add
+export sub
+export mul
+export div
+export mod
 
 source Cpp from "core.hpp" (
-    "morloc_map" as map
+  -- arithmetic
+    "morloc_add" as add
+  , "morloc_sub" as sub
+  , "morloc_mul" as mul
+  , "morloc_div" as div
+  , "morloc_mod" as mod
+  -- higher order functions
+  , "morloc_map" as map
   , "morloc_zipWith" as zipWith
   , "morloc_fold" as fold
   , "morloc_enumerateWith" as enumerateWith
 )
+
+
+-- arithmetic operators - these are all
+-- add :: (Num a) => forall a . a -> a -> a;
+add :: Num -> Num -> Num;
+add Cpp :: double -> double -> double;
+
+-- sub :: (Num a) => forall a . a -> a -> a;
+sub :: Num -> Num -> Num;
+sub Cpp :: double -> double -> double;
+
+-- mul :: (Num a) => forall a . a -> a -> a;
+mul :: Num -> Num -> Num;
+mul Cpp :: double -> double -> double;
+
+-- div :: (Num a) => forall a . a -> a -> a;
+div :: Num -> Num -> Num;
+div Cpp :: double -> double -> double;
+
+-- mod :: (Num a) => forall a . a -> a -> a;
+div :: Num -> Num -> Num;
+mod Cpp :: double -> double -> double;
+
 
 map :: forall a b . (a -> b) -> [a] -> [b];
 map Cpp :: forall a b . (a -> b) -> "std::vector<$1>" a
@@ -46,6 +81,8 @@ source Cpp from "serializers.hpp" (
   , "unpackSizeTs"
   , "packStrings"
   , "unpackStrings"
+  , "packTuple2"
+  , "unpackTuple2"
 )
 
 -- JSON input is char*, but the serialized results are std::string
@@ -73,5 +110,8 @@ unpackDoubles Cpp :: unpacks => "std::string" -> "std::vector<$1>" double;
 
 packStrings Cpp :: packs => "std::vector<$1>" string -> "std::string";
 unpackStrings Cpp :: unpacks => "std::string" -> "std::vector<$1>" string;
+
+packTuple2 Cpp :: packs => forall a b   . "std::tuple<$1,$2>"    a b   -> "std::string";
+unpackTuple2 Cpp :: unpacks => forall a b   . "std::string" -> "std::tuple<$1,$2>" a b;
 
 }
