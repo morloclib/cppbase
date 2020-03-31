@@ -1,0 +1,11 @@
+sudo: false
+
+language: c
+
+addons:
+    apt:
+        packages:
+        - libgsl0-dev
+
+script:
+  - make test

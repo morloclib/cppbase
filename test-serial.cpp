@@ -1,7 +1,7 @@
 // This program exists only to test the hpp header
 
 #include <stdio.h>
-#include "serializers.hpp"
+#include "serial.hpp"
 
 int main(int argc, char * argv[]){
 
@@ -37,6 +37,6 @@ int main(int argc, char * argv[]){
     std::cout << packBools(unpackBools("[ true , false  , true]")) << std::endl;
     // foreign_call
     std::cout << std::endl;
-    std::cout << foreign_call("ls -shit") << std::endl;
+    std::cout << foreign_call("echo hello") << std::endl;
     return 0;
 }
