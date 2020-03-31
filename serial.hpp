@@ -400,7 +400,7 @@ std::string pack(int x){
 template <class A, class B>
 std::string pack(std::tuple<A,B> x){
     std::stringstream json;
-    json << "[" << pack(std::get<0>(x)) << "," << pack(std::get<1>(x)) << "]" << std::endl;
+    json << "[" << pack(std::get<0>(x)) << "," << pack(std::get<1>(x)) << "]";
     return json.str();
 }
 
