@@ -1,5 +1,7 @@
 module cppbase {
 
+source Cpp from "serial.hpp" ("pack", "unpack")
+
 export enumerateWith
 export fold
 export map
@@ -62,56 +64,5 @@ fold Cpp :: forall a b . (b -> a -> b) -> b -> "std::vector<$1>" a -> b;
 enumerateWith     :: forall a b . (a -> Int -> b) -> [a] -> [b]; 
 enumerateWith Cpp :: forall a b . (a -> "int" -> b) -> "std::vector<$1>" a
                                                     -> "std::vector<$1>" b;
-
-source Cpp from "serial.hpp" (
-    "packDouble"
-  , "unpackDouble"
-  , "packInt"
-  , "unpackInt"
-  , "packSizeT"
-  , "unpackSizeT"
-  , "packString"
-  , "unpackString"
-  -- hard-coded vectors (I need a generic way to handle these)
-  , "packDoubles"
-  , "unpackDoubles"
-  , "packInts"
-  , "unpackInts"
-  , "packSizeTs"
-  , "unpackSizeTs"
-  , "packStrings"
-  , "unpackStrings"
-  , "packTuple2"
-  , "unpackTuple2"
-)
-
--- JSON input is char*, but the serialized results are std::string
-
-packDouble Cpp :: packs => "double" -> "std::string";
-unpackDouble Cpp :: unpacks => "std::string" -> "double";
-
-packInt Cpp :: packs => "int" -> "std::string";
-unpackInt Cpp :: unpacks => "std::string" -> "int";
-
-packSizeT Cpp :: packs => "size_t" -> "std::string";
-unpackSizeT Cpp :: unpacks => "std::string" -> "size_t";
-
-packString Cpp :: packs => "std::string" -> "std::string";
-unpackString Cpp :: unpacks => "std::string" -> "std::string";
-
-packInts Cpp :: packs => "std::vector<$1>" int -> "std::string";
-unpackInts Cpp :: unpacks => "std::string" -> "std::vector<$1>" int;
-
-packSizeTs Cpp :: packs => "std::vector<$1>" size_t -> "std::string";
-unpackSizeTs Cpp :: unpacks => "std::string" -> "std::vector<$1>" size_t;
-
-packDoubles Cpp :: packs => "std::vector<$1>" double -> "std::string";
-unpackDoubles Cpp :: unpacks => "std::string" -> "std::vector<$1>" double;
-
-packStrings Cpp :: packs => "std::vector<$1>" string -> "std::string";
-unpackStrings Cpp :: unpacks => "std::string" -> "std::vector<$1>" string;
-
-packTuple2 Cpp :: packs => forall a b . "std::tuple<$1,$2>" a b -> "std::string";
-unpackTuple2 Cpp :: unpacks => forall a b . "std::string" -> "std::tuple<$1,$2>" a b;
 
 }

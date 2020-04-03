@@ -5,39 +5,29 @@
 
 int main(int argc, char * argv[]){
 
-    // parser a tuple
-    bool a;
-    std::tuple<double, bool> b;
-    std::tuple<bool,std::tuple<double, bool>> tuple2 = unpackTuple2("[true, [42, false]]", a, b);
-    std::cout << "(" << std::get<0>(tuple2)
-              << ", (" << std::get<0>(std::get<1>(tuple2))
-              << ", " << std::get<1>(std::get<1>(tuple2))
-              << "))" << std::endl;
-    std::cout << packTuple2(unpackTuple2("[true, [42, false]]", a, b)) << std::endl;
-    // single value
-    std::cout << unpackInt("42") << std::endl;
-    std::cout << unpackInt("-42") << std::endl;
-    std::cout << unpackSizeT("42") << std::endl;
-    std::cout << unpackDouble("42.9") << std::endl;
-    std::cout << unpackString("\"hello deary\"") << std::endl;
-    std::cout << unpackBool("true") << std::endl;
-    std::cout << packInt(42) << std::endl;
-    std::cout << packSizeT(42) << std::endl;
-    std::cout << packDouble(42.9) << std::endl;
-    std::cout << packString("hello deary") << std::endl;
-    std::cout << packBool(true) << std::endl;
-    // vectors
-    std::vector<int> ints = unpackInts("[1,2,3]");
-    std::cout << ints[0] << ints[1] << ints[2] << std::endl;
-    std::cout << packInts(unpackInts("[12,34,45]")) << std::endl;
-    std::cout << packInts(unpackInts("[ 12f , -34.1, 45 ]")) << std::endl;
-    std::cout << packSizeTs(unpackSizeTs("[12,34,45]")) << std::endl;
-    std::cout << packDoubles(unpackDoubles("[12.1,34,45]")) << std::endl;
-    std::cout << packStrings(unpackStrings("[\"yo,whatup?\",\"[bar, \\\"f\\\"]\" it doesn't \
-      have to be a comma, but maybe it should be? \"my\\\"stuff\"]")) << std::endl;
-    std::cout << packBools(unpackBools("[ true , false  , true]")) << std::endl;
-    // foreign_call
-    std::cout << std::endl;
-    std::cout << foreign_call("echo hello") << std::endl;
+    bool bool_schema;
+    std::string bool_json = "true";
+    bool bool_data = true;
+    std::cout << pack(bool_data, bool_schema) << " | "
+              << unpack(bool_json, bool_schema) << std::endl;
+
+    std::string string_data = "yolo!";
+    std::string string_json = "\"yolo!\"";
+    std::string string_schema;
+    std::cout << pack(string_data, string_schema) << " | "
+              << unpack(string_json, string_schema) << std::endl;
+
+    double double_data = 42.1;
+    std::string double_json = "42.1";
+    double double_schema;
+    std::cout << pack(double_data, double_schema) << " | "
+              << unpack(double_json, double_schema) << std::endl;
+
+    std::vector<double> list_data = {4, 1.3, 5.6};
+    std::string list_json = "[4, 1.3 , 5.6 ] ";
+    std::vector<double> list_schema;
+    std::cout << pack(list_data, list_schema) << " | "
+              << pack(unpack(list_json, list_schema), list_schema) << std::endl;
+
     return 0;
 }
