@@ -29,5 +29,11 @@ int main(int argc, char * argv[]){
     std::cout << pack(list_data, list_schema) << " | "
               << pack(unpack(list_json, list_schema), list_schema) << std::endl;
 
+    std::tuple<double,bool,std::tuple<int,int>> tuple_schema;
+    std::string tuple_json = "(41.5, true, (45, 999))";
+    std::tuple<double,bool,std::tuple<int,int>> tuple_data = unpack(tuple_json, tuple_schema);
+    std::tuple<double,bool,std::tuple<int,int>> x = unpack(tuple_json, tuple_schema);
+    std::cout << pack(unpack(tuple_json, tuple_schema), tuple_schema) << std::endl;
+
     return 0;
 }
