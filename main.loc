@@ -1,6 +1,10 @@
 module cppbase {
 
+-- generic serialization functions
 source Cpp from "serial.hpp" ("pack", "unpack")
+
+-- required machinery for C++ interoperability
+source Cpp from "interop.hpp" ("foreign_call")
 
 export enumerateWith
 export fold
