@@ -30,6 +30,20 @@ source Cpp from "core.hpp" (
   , "morloc_enumerateWith" as enumerateWith
 )
 
+-- NOTE: After a system for numeric casting is added to morloc, replace the
+-- concrete arithmetic operators below with qualified types, e.g.:
+--    add :: Num -> Num -> Num
+--    add Cpp :: forall a . a -> a -> a
+-- Or maybe
+--    add Cpp :: forall a b c . a -> b -> c
+-- So this is complicated ... if the two inputs to add can be of different
+-- types, say int and double, then what is the return type? For add, the return
+-- type would need to be decided based on a function of the input types. But these
+-- types will depend on the function. I will need to research this problem ...
+--
+-- As a temporary measure, I will leave the types as "double". On the C++ side
+-- in core.hpp, they are all implemented as fully generalized templates of three
+-- independent types.
 
 -- arithmetic operators - these are all
 -- add :: (Num a) => forall a . a -> a -> a;

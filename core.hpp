@@ -3,34 +3,35 @@
 
 #include <vector>
 #include <algorithm>
+#include <functional>
 
-template <class A, class B>
-double morloc_add(A x, B y){
+template <class A, class B, class C>
+C morloc_add(A x, B y){
     return x + y;
 }
 
-template <class A, class B>
-double morloc_sub(A x, B y){
+template <class A, class B, class C>
+C morloc_sub(A x, B y){
     return x - y;
 }
 
-template <class A, class B>
-double morloc_mul(A x, B y){
+template <class A, class B, class C>
+C morloc_mul(A x, B y){
     return x * y;
 }
 
-template <class A, class B>
-double morloc_div(A x, B y){
+template <class A, class B, class C>
+C morloc_div(A x, B y){
     return x / y;
 }
 
-template <class A, class B>
-double morloc_mod(A x, B y){
+template <class A, class B, class C>
+C morloc_mod(A x, B y){
     return x % y;
 }
 
 template <class A, class B>
-std::vector<B> morloc_map(B(*f)(A), const std::vector<A> &xs){
+std::vector<B> morloc_map(std::function<B(A)> f, const std::vector<A> &xs){
     std::vector<B> ys(xs.size());
     std::transform(xs.begin(), xs.end(), ys.begin(), f);
     return ys;
@@ -38,7 +39,7 @@ std::vector<B> morloc_map(B(*f)(A), const std::vector<A> &xs){
 
 template <class A, class B, class C>
 std::vector<C> morloc_zipWith(
-        C(*f)(A,B),
+        std::function<C(A,B)> f,
         const std::vector<A> &xs,
         const std::vector<B> &ys
     )
@@ -52,17 +53,17 @@ std::vector<C> morloc_zipWith(
 }
 
 template <class A, class B>
-B morloc_fold(B(*f)(B,A), B y, const std::vector<A> xs){
+B morloc_fold(std::function<B(B,A)> f, B y, const std::vector<A> xs){
     for(size_t i=0; i < xs.size(); i++){
         y = f(y, xs[i]);
     }
     return y;
 }
 
-template <class A, class B>
-std::vector<B> morloc_enumerateWith(B(*f)(A,size_t), std::vector<A> xs){
+template <class A, class B, class Index>
+std::vector<B> morloc_enumerateWith(std::function<B(A,Index)> f, std::vector<A> xs){
     std::vector<B> ys(xs.size());
-    for(size_t i = 0; i < xs.size(); i++){
+    for(Index i = 0; i < xs.size(); i++){
        ys[i] = f(xs[i], i);  
     }
     return ys;
