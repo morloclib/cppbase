@@ -31,7 +31,7 @@ C morloc_mod(A x, B y){
 }
 
 template <class A, class B>
-std::vector<B> morloc_map(std::function<B(A)> f, const std::vector<A> &xs){
+std::vector<B> morloc_map(std::function<B(A)> f, std::vector<A> xs){
     std::vector<B> ys(xs.size());
     std::transform(xs.begin(), xs.end(), ys.begin(), f);
     return ys;
@@ -40,8 +40,8 @@ std::vector<B> morloc_map(std::function<B(A)> f, const std::vector<A> &xs){
 template <class A, class B, class C>
 std::vector<C> morloc_zipWith(
         std::function<C(A,B)> f,
-        const std::vector<A> &xs,
-        const std::vector<B> &ys
+        std::vector<A> xs,
+        std::vector<B> ys
     )
 {
     size_t N = std::min(xs.size(), ys.size());
@@ -53,7 +53,7 @@ std::vector<C> morloc_zipWith(
 }
 
 template <class A, class B>
-B morloc_fold(std::function<B(B,A)> f, B y, const std::vector<A> xs){
+B morloc_fold(std::function<B(B,A)> f, B y, std::vector<A> xs){
     for(size_t i=0; i < xs.size(); i++){
         y = f(y, xs[i]);
     }
