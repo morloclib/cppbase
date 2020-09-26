@@ -393,5 +393,4 @@ std::tuple<Rest...> unpack(const std::string json, std::tuple<Rest...> output){
     return output;
 }
 
-
 #endif
