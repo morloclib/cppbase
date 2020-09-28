@@ -6,6 +6,7 @@ source Cpp from "serial.hpp" ("pack", "unpack")
 -- required machinery for C++ interoperability
 source Cpp from "interop.hpp" ("foreign_call")
 
+export id
 export enumerateWith
 export fold
 export map
@@ -16,9 +17,19 @@ export mul
 export div
 export mod
 
+-- packMap :: pack => [(key,val)] -> Map key val;
+-- packMap py :: pack => [(key,val)] -> "dict" key val;
+-- packMap py = packDict;
+--
+-- unpackMap :: unpack => Map key val -> [(key,val)];
+-- unpackMap py :: unpack => "dict" key val -> [(key,val)];
+-- unpackMap py = unpackDict;
+
+
 source Cpp from "core.hpp" (
+    "morloc_id" as id
   -- arithmetic
-    "morloc_add" as add
+  , "morloc_add" as add
   , "morloc_sub" as sub
   , "morloc_mul" as mul
   , "morloc_div" as div
@@ -30,85 +41,88 @@ source Cpp from "core.hpp" (
   , "morloc_enumerateWith" as enumerateWith
 )
 
+id :: a -> a;
+id Cpp :: a -> a;
+
 -- foo :: Int -> Table {a :: Int, b :: Str}
 -- foo cpp :: int -> Table {b as "brian" :: "std::string", a :: int}
 -- -- The order can differ from the general type and field names can be replaced
 
--- tuple functions
-fst      :: (a, b) -> a ;
-snd      :: (a, b) -> b;
-tuple    :: a -> b -> (a, b);
-couple   :: (a -> b) -> a -> (b, a);
-with_sec :: (b -> c) -> (a, b) -> (a, c);
-with_fst :: (a -> c) -> (a, b) -> (c, b);
-curry    :: ((a, b) -> c) -> a -> b -> c;
-uncurry  :: (a -> b -> c) -> (a, b) -> c;
-
--- pairlists
-zip   :: [a] -> [b] -> [(a, b)];
-unzip :: [(a, b)] -> ([a], [b]);
-keys  :: [(a, b)] -> [a];
-vals  :: [(a, b)] -> [b];
-
--- functions over pairlists
-filter_key :: (a -> Bool)  -> [(a, b)] -> [(a, b)];
-filter_val :: (a -> Bool)  -> [(b, a)] -> [(b, a)];
-map_key    :: (a -> b)     -> [(a, c)] -> [(b, c)];
-map_val    :: (a -> b)     -> [(c, a)] -> [(c, b)];
-with_keys  :: ([a] -> [b]) -> [(a, c)] -> [(b, c)];
-with_vals  :: ([a] -> [b]) -> [(c, a)] -> [(c, b)];
-
--- -- Laws
--- with_vals id xs == xs
--- with_keys id xs == xs
--- map_val id xs == xs
--- map_key id xs == xs
--- filter_val true xs == xs
--- filter_val false xs == []
--- filter_key true xs == xs
--- filter_key false xs == []
-
-context_filter_key :: (a -> b -> (a, Bool)) -> a -> [(b,c)] -> [(b,c)];
-context_filter_val :: (a -> b -> (a, Bool)) -> a -> [(c,b)] -> [(c,b)];
-
--- functional tools
-flip  :: (a -> b -> c) -> b -> a -> c;
-until :: (a -> Bool) -> (a -> a) -> a -> a;
-
--- foldable functions - replace once I get typeclasses working
-length    :: [a] -> Int;
-reverse   :: [a] -> [a];
-concat    :: [[a]] -> [a];
-concatMap :: (a -> [b]) -> [a] -> [b];
-
--- list creation
-replicate :: Int -> a -> [a];
-
--- general list processing
-head :: [a] -> a;        -- [1,2,3] => 1
-last :: [a] -> a;        -- [1,2,3] => 3
-tail :: [a] -> [a];      -- [1,2,3] => [2,3]
-init :: [a] -> [a];      -- [1,2,3] => [1,2]
-get  :: Int -> [a] -> a; -- get 1 [1,2,3] => 2
-take :: Int -> [a] -> [a];
-drop :: Int -> [a] -> [a];
-takeWhile :: (a -> Bool) -> [a] -> [a];
-dropWhile :: (a -> Bool) -> [a] -> [a];
-span      :: (a -> Bool) -> [a] -> ([a], [a]);
-break     :: (a -> Bool) -> [a] -> ([a], [a]);
-splitAt   :: Int -> [a] -> ([a], [a]);
-
--- string processing
-lines   :: Str -> [Str];
-words   :: Str -> [Str];
-unlines :: [Str] -> Str;
-unwords :: [Str] -> Str;
-
--- accumulating folds
-scanl  :: (b -> a -> b) -> b -> [a] -> [b];
-scanr  :: (a -> b -> b) -> b -> [a] -> [b];
-scanl1 :: (a -> a -> a) -> [a] -> [a];
-scanr1 :: (a -> a -> a) -> [a] -> [a];
+-- -- tuple functions
+-- fst      :: (a, b) -> a ;
+-- snd      :: (a, b) -> b;
+-- tuple    :: a -> b -> (a, b);
+-- couple   :: (a -> b) -> a -> (b, a);
+-- with_sec :: (b -> c) -> (a, b) -> (a, c);
+-- with_fst :: (a -> c) -> (a, b) -> (c, b);
+-- curry    :: ((a, b) -> c) -> a -> b -> c;
+-- uncurry  :: (a -> b -> c) -> (a, b) -> c;
+--
+-- -- pairlists
+-- zip   :: [a] -> [b] -> [(a, b)];
+-- unzip :: [(a, b)] -> ([a], [b]);
+-- keys  :: [(a, b)] -> [a];
+-- vals  :: [(a, b)] -> [b];
+--
+-- -- functions over pairlists
+-- filter_key :: (a -> Bool)  -> [(a, b)] -> [(a, b)];
+-- filter_val :: (a -> Bool)  -> [(b, a)] -> [(b, a)];
+-- map_key    :: (a -> b)     -> [(a, c)] -> [(b, c)];
+-- map_val    :: (a -> b)     -> [(c, a)] -> [(c, b)];
+-- with_keys  :: ([a] -> [b]) -> [(a, c)] -> [(b, c)];
+-- with_vals  :: ([a] -> [b]) -> [(c, a)] -> [(c, b)];
+--
+-- -- -- Laws
+-- -- with_vals id xs == xs
+-- -- with_keys id xs == xs
+-- -- map_val id xs == xs
+-- -- map_key id xs == xs
+-- -- filter_val true xs == xs
+-- -- filter_val false xs == []
+-- -- filter_key true xs == xs
+-- -- filter_key false xs == []
+--
+-- context_filter_key :: (a -> b -> (a, Bool)) -> a -> [(b,c)] -> [(b,c)];
+-- context_filter_val :: (a -> b -> (a, Bool)) -> a -> [(c,b)] -> [(c,b)];
+--
+-- -- functional tools
+-- flip  :: (a -> b -> c) -> b -> a -> c;
+-- until :: (a -> Bool) -> (a -> a) -> a -> a;
+--
+-- -- foldable functions - replace once I get typeclasses working
+-- length    :: [a] -> Int;
+-- reverse   :: [a] -> [a];
+-- concat    :: [[a]] -> [a];
+-- concatMap :: (a -> [b]) -> [a] -> [b];
+--
+-- -- list creation
+-- replicate :: Int -> a -> [a];
+--
+-- -- general list processing
+-- head :: [a] -> a;        -- [1,2,3] => 1
+-- last :: [a] -> a;        -- [1,2,3] => 3
+-- tail :: [a] -> [a];      -- [1,2,3] => [2,3]
+-- init :: [a] -> [a];      -- [1,2,3] => [1,2]
+-- get  :: Int -> [a] -> a; -- get 1 [1,2,3] => 2
+-- take :: Int -> [a] -> [a];
+-- drop :: Int -> [a] -> [a];
+-- takeWhile :: (a -> Bool) -> [a] -> [a];
+-- dropWhile :: (a -> Bool) -> [a] -> [a];
+-- span      :: (a -> Bool) -> [a] -> ([a], [a]);
+-- break     :: (a -> Bool) -> [a] -> ([a], [a]);
+-- splitAt   :: Int -> [a] -> ([a], [a]);
+--
+-- -- string processing
+-- lines   :: Str -> [Str];
+-- words   :: Str -> [Str];
+-- unlines :: [Str] -> Str;
+-- unwords :: [Str] -> Str;
+--
+-- -- accumulating folds
+-- scanl  :: (b -> a -> b) -> b -> [a] -> [b];
+-- scanr  :: (a -> b -> b) -> b -> [a] -> [b];
+-- scanl1 :: (a -> a -> a) -> [a] -> [a];
+-- scanr1 :: (a -> a -> a) -> [a] -> [a];
 
 
 -- NOTE: After a system for numeric casting is added to morloc, replace the

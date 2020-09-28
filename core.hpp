@@ -6,6 +6,11 @@
 #include <functional>
 #include <utility>
 
+template <class A>
+A morloc_id(A x){
+    return(x);
+}
+
 // tuple functions
 
 // fst      :: forall a b . (a, b) -> a ;
