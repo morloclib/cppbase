@@ -1,13 +1,6 @@
 all:
-	g++ -Wall -std=c++11 -o test-core.out test-core.cpp core.hpp
-
-.PHONY: test
-test:
-	g++ -Wall -std=c++11 -o test-core.out test-core.cpp core.hpp
-	./test-core.out > .test-core-obs.txt
-	diff .test-core-obs.txt .test-core-exp.txt
-
+	g++ -std=c++11 -g -Wall -O0 -o a.out *.c *.h *.hpp
 
 .PHONY: clean
 clean:
-	rm -f *gch *.out
+	rm -f *.o *.gch a.out

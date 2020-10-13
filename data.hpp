@@ -2,13 +2,15 @@
 #define __DATA_HPP__
 
 #include <vector>
+#include <map>
 #include <utility>
+#include <cassert>
 
 template <class A, class B>
-std::map<A,B> morloc_fst(std::pair<std::vector<A>,std::vector<B>> items){
+std::map<A,B> morloc_packMap(std::pair<std::vector<A>,std::vector<B>> items){
     std::map<A,B> m;
-    std::vector<A> a = items.first();
-    std::vector<B> b = items.second();
+    std::vector<A> a = items.first;
+    std::vector<B> b = items.second;
     assert(a.size() == b.size());
     for(size_t i = 0; i < a.size(); i++){
         m[a[i]] = b[i];
@@ -17,12 +19,12 @@ std::map<A,B> morloc_fst(std::pair<std::vector<A>,std::vector<B>> items){
 }
 
 template <class A, class B>
-std::pair<std::vector<A>,std::vector<B>> morloc_fst(std::map<A,B> m){
+std::pair<std::vector<A>,std::vector<B>> morloc_unpackMap(std::map<A,B> m){
     std::vector<A> a;
     std::vector<B> b;
-    for(auto it = m.begin(); it != m.end(); i++){
-        a.push_back(it.first);
-        b.push_back(it.second);
+    for (auto pair : m) {
+        a.push_back(pair.first);
+        b.push_back(pair.second);
     }
     return std::make_pair(a, b);
 }
