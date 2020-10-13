@@ -11,15 +11,6 @@ export mul
 export div
 export mod
 
--- packMap :: pack => [(key,val)] -> Map key val;
--- packMap py :: pack => [(key,val)] -> "dict" key val;
--- packMap py = packDict;
---
--- unpackMap :: unpack => Map key val -> [(key,val)];
--- unpackMap py :: unpack => "dict" key val -> [(key,val)];
--- unpackMap py = unpackDict;
-
-
 source Cpp from "core.hpp" (
     "morloc_id" as id
   -- arithmetic
@@ -171,5 +162,25 @@ fold Cpp :: (b -> a -> b) -> b -> "std::vector<$1>" a -> b;
 enumerateWith     :: (a -> Int -> b) -> [a] -> [b]; 
 enumerateWith Cpp :: (a -> "int" -> b) -> "std::vector<$1>" a
                                        -> "std::vector<$1>" b;
+
+
+-------------------------------------------------------------------------------
+--                 Pack and Unpack internal functions                          
+-- These functions are used by morloc internally for (de)serialization of types
+-- that cannot be automatically (de)serialized into/from JSON. They should not
+-- be exported.
+-------------------------------------------------------------------------------
+
+source Cpp from "data.hpp" (
+    "morloc_packMap" as packMap
+    "morloc_unpackMap" as unpackMap
+)
+
+-- These do not need to be exported (and indeed should not be)
+packMap :: pack => ([key],[val]) -> Map key val;
+packMap Cpp :: pack => ([key],[val]) -> "std::map<$1,$2>" key val;
+
+unpackMap :: unpack => Map key val -> ([key],[val]);
+unpackMap Cpp :: unpack => "std::map<$1,$2>" key val -> ([key],[val]);
 
 }
