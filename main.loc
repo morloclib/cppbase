@@ -176,6 +176,8 @@ source Cpp from "data.hpp" (
   , "morloc_unpackMap" as unpackMap
 )
 
+export Map;
+
 -- These do not need to be exported (and indeed should not be)
 packMap :: pack => ([key],[val]) -> Map key val;
 packMap Cpp :: pack => ([key],[val]) -> "std::map<$1,$2>" key val;
