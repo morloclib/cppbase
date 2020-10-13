@@ -1,11 +1,15 @@
+language: c++
 sudo: false
-
-language: c
 
 addons:
     apt:
         packages:
         - libgsl0-dev
 
+compiler:
+  - clang
+  - gcc
+
 script:
-  - make test
+  - make
+  - "./a.out"
