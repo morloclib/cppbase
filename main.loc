@@ -173,7 +173,7 @@ enumerateWith Cpp :: (a -> "int" -> b) -> "std::vector<$1>" a
 
 source Cpp from "data.hpp" (
     "morloc_packMap" as packMap
-    "morloc_unpackMap" as unpackMap
+  , "morloc_unpackMap" as unpackMap
 )
 
 -- These do not need to be exported (and indeed should not be)
