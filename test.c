@@ -63,6 +63,6 @@ TEST_CASE("Higher Order Functions"){
 TEST_CASE("Serialization"){
     std::vector<std::string> xs = {"frogs", "oranges", "pretzels"};    
     std::vector<int> ys = {1,5,11};
-    std::pair<std::vector<std::string>,std::vector<int>> p = std::make_pair(xs, ys);
+    std::tuple<std::vector<std::string>,std::vector<int>> p = std::make_tuple(xs, ys);
     CHECK(morloc_unpackMap(morloc_packMap(p)) == p);
 }
