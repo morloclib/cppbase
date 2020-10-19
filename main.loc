@@ -178,6 +178,8 @@ source Cpp from "data.hpp" (
 
 export Map;
 
+type Cpp (Map key val) = "std::map<$1,$2>" key val;
+
 -- These do not need to be exported (and indeed should not be)
 packMap :: pack => ([key],[val]) -> Map key val;
 packMap Cpp :: pack => ([key],[val]) -> "std::map<$1,$2>" key val;
