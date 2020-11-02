@@ -1,5 +1,10 @@
 module cppbase {
 
+type Cpp Num = "double";
+type Cpp Int = "int";
+type Cpp Str = "std::string";
+type Cpp Bool = "bool";
+
 export id
 export enumerateWith
 export fold
