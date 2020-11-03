@@ -5,6 +5,11 @@ type Cpp Int = "int";
 type Cpp Str = "std::string";
 type Cpp Bool = "bool";
 
+export Num
+export Int
+export Str
+export Bool
+
 export id
 export enumerateWith
 export fold
