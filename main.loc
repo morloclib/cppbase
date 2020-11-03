@@ -21,6 +21,17 @@ export mul
 export div
 export mod
 
+export zip
+export unzip
+export keys
+export vals
+export filter_key
+export filter_val
+export map_key
+export map_val
+export with_keys
+export with_vals
+
 source Cpp from "core.hpp" (
     "morloc_id" as id
   -- arithmetic
@@ -34,6 +45,17 @@ source Cpp from "core.hpp" (
   , "morloc_zipWith" as zipWith
   , "morloc_fold" as fold
   , "morloc_enumerateWith" as enumerateWith
+  -- pair-list functions
+  , "morloc_zip" as zip
+  , "morloc_unzip" as unzip
+  , "morloc_keys" as keys
+  , "morloc_vals" as vals
+  , "morloc_filter_key" as filter_key
+  , "morloc_filter_val" as filter_val
+  , "morloc_map_key" as map_key
+  , "morloc_map_val" as map_val
+  , "morloc_with_keys" as with_keys
+  , "morloc_with_vals" as with_vals
 )
 
 id :: a -> a;
@@ -172,6 +194,37 @@ fold Cpp :: (b -> a -> b) -> b -> "std::vector<$1>" a -> b;
 enumerateWith     :: (a -> Int -> b) -> [a] -> [b]; 
 enumerateWith Cpp :: (a -> "int" -> b) -> "std::vector<$1>" a
                                        -> "std::vector<$1>" b;
+
+
+-------------------------------------------------------------------------------
+--                       Pair-list functions                                   
+-------------------------------------------------------------------------------
+
+
+
+-- pairlists
+zip   :: [a] -> [b] -> [(a, b)];
+unzip :: [(a, b)] -> ([a], [b]);
+keys  :: [(a, b)] -> [a];
+vals  :: [(a, b)] -> [b];
+zip   Cpp :: [a] -> [b] -> [(a, b)];
+unzip Cpp :: [(a, b)] -> ([a], [b]);
+keys  Cpp :: [(a, b)] -> [a];
+vals  Cpp :: [(a, b)] -> [b];
+
+-- functions over pairlists
+filter_key :: (a -> Bool)  -> [(a, b)] -> [(a, b)];
+filter_val :: (a -> Bool)  -> [(b, a)] -> [(b, a)];
+map_key    :: (a -> b)     -> [(a, c)] -> [(b, c)];
+map_val    :: (a -> b)     -> [(c, a)] -> [(c, b)];
+with_keys  :: ([a] -> [b]) -> [(a, c)] -> [(b, c)];
+with_vals  :: ([a] -> [b]) -> [(c, a)] -> [(c, b)];
+filter_key Cpp :: (a -> Bool)  -> [(a, b)] -> [(a, b)];
+filter_val Cpp :: (a -> Bool)  -> [(b, a)] -> [(b, a)];
+map_key    Cpp :: (a -> b)     -> [(a, c)] -> [(b, c)];
+map_val    Cpp :: (a -> b)     -> [(c, a)] -> [(c, b)];
+with_keys  Cpp :: ([a] -> [b]) -> [(a, c)] -> [(b, c)];
+with_vals  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)];
 
 
 -------------------------------------------------------------------------------
