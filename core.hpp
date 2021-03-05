@@ -96,7 +96,7 @@ std::vector<std::tuple<A,B>> morloc_filter_key(
 
 // filter_val :: forall a b   . (a -> Bool)  -> [(b, a)] -> [(b, a)];
 template <class A, class B>
-std::vector<std::tuple<A,B>> morloc_filter_key(
+std::vector<std::tuple<A,B>> morloc_filter_val(
     std::function<bool(B)> keep,
     std::vector<std::tuple<A,B>> xs
 ){
