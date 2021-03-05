@@ -32,31 +32,32 @@ export map_val
 export with_keys
 export with_vals
 
-source Cpp from "core.hpp" (
-    "morloc_id" as id
-  -- arithmetic
-  , "morloc_add" as add
-  , "morloc_sub" as sub
-  , "morloc_mul" as mul
-  , "morloc_div" as div
-  , "morloc_mod" as mod
-  -- higher order functions
-  , "morloc_map" as map
-  , "morloc_zipWith" as zipWith
-  , "morloc_fold" as fold
-  , "morloc_enumerateWith" as enumerateWith
-  -- pair-list functions
-  , "morloc_zip" as zip
-  , "morloc_unzip" as unzip
-  , "morloc_keys" as keys
-  , "morloc_vals" as vals
-  , "morloc_filter_key" as filter_key
-  , "morloc_filter_val" as filter_val
-  , "morloc_map_key" as map_key
-  , "morloc_map_val" as map_val
-  , "morloc_with_keys" as with_keys
-  , "morloc_with_vals" as with_vals
-)
+source Cpp from "core.hpp"
+ (
+   "morloc_id" as id
+ -- arithmetic
+ , "morloc_add" as add
+ , "morloc_sub" as sub
+ , "morloc_mul" as mul
+ , "morloc_div" as div
+ , "morloc_mod" as mod
+ -- higher order functions
+ , "morloc_map" as map
+ , "morloc_zipWith" as zipWith
+ , "morloc_fold" as fold
+ , "morloc_enumerateWith" as enumerateWith
+ -- pair-list functions
+ , "morloc_zip" as zip
+ , "morloc_unzip" as unzip
+ , "morloc_keys" as keys
+ , "morloc_vals" as vals
+ , "morloc_filter_key" as filter_key
+ , "morloc_filter_val" as filter_val
+ , "morloc_map_key" as map_key
+ , "morloc_map_val" as map_val
+ , "morloc_with_keys" as with_keys
+ , "morloc_with_vals" as with_vals
+ )
 
 id :: a -> a
 id Cpp :: a -> a
@@ -66,7 +67,7 @@ id Cpp :: a -> a
 -- -- The order can differ from the general type and field names can be replaced
 
 -- -- tuple functions
--- fst      :: (a, b) -> a 
+-- fst      :: (a, b) -> a
 -- snd      :: (a, b) -> b
 -- tuple    :: a -> b -> (a, b)
 -- couple   :: (a -> b) -> a -> (b, a)
@@ -191,13 +192,13 @@ zipWith Cpp :: (a -> b -> c) -> "std::vector<$1>" a
 fold     :: (b -> a -> b) -> b -> [a] -> b
 fold Cpp :: (b -> a -> b) -> b -> "std::vector<$1>" a -> b
 
-enumerateWith     :: (a -> Int -> b) -> [a] -> [b] 
+enumerateWith     :: (a -> Int -> b) -> [a] -> [b]
 enumerateWith Cpp :: (a -> "int" -> b) -> "std::vector<$1>" a
                                        -> "std::vector<$1>" b
 
 
 -------------------------------------------------------------------------------
---                       Pair-list functions                                   
+--                       Pair-list functions
 -------------------------------------------------------------------------------
 
 
@@ -228,16 +229,16 @@ with_vals  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
 
 
 -------------------------------------------------------------------------------
---                 Pack and Unpack internal functions                          
+--                 Pack and Unpack internal functions
 -- These functions are used by morloc internally for (de)serialization of types
 -- that cannot be automatically (de)serialized into/from JSON. They should not
 -- be exported.
 -------------------------------------------------------------------------------
 
-source Cpp from "data.hpp" (
-    "morloc_packMap" as packMap
-  , "morloc_unpackMap" as unpackMap
-)
+source Cpp from "data.hpp"
+ ( "morloc_packMap" as packMap
+ , "morloc_unpackMap" as unpackMap
+ )
 
 export Map
 
