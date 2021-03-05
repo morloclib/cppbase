@@ -1,9 +1,9 @@
-module cppbase {
+module cppbase
 
-type Cpp Num = "double";
-type Cpp Int = "int";
-type Cpp Str = "std::string";
-type Cpp Bool = "bool";
+type Cpp Num = "double"
+type Cpp Int = "int"
+type Cpp Str = "std::string"
+type Cpp Bool = "bool"
 
 export Num
 export Int
@@ -58,36 +58,36 @@ source Cpp from "core.hpp" (
   , "morloc_with_vals" as with_vals
 )
 
-id :: a -> a;
-id Cpp :: a -> a;
+id :: a -> a
+id Cpp :: a -> a
 
 -- foo :: Int -> Table {a :: Int, b :: Str}
 -- foo cpp :: int -> Table {b as "brian" :: "std::string", a :: int}
 -- -- The order can differ from the general type and field names can be replaced
 
 -- -- tuple functions
--- fst      :: (a, b) -> a ;
--- snd      :: (a, b) -> b;
--- tuple    :: a -> b -> (a, b);
--- couple   :: (a -> b) -> a -> (b, a);
--- with_sec :: (b -> c) -> (a, b) -> (a, c);
--- with_fst :: (a -> c) -> (a, b) -> (c, b);
--- curry    :: ((a, b) -> c) -> a -> b -> c;
--- uncurry  :: (a -> b -> c) -> (a, b) -> c;
+-- fst      :: (a, b) -> a 
+-- snd      :: (a, b) -> b
+-- tuple    :: a -> b -> (a, b)
+-- couple   :: (a -> b) -> a -> (b, a)
+-- with_sec :: (b -> c) -> (a, b) -> (a, c)
+-- with_fst :: (a -> c) -> (a, b) -> (c, b)
+-- curry    :: ((a, b) -> c) -> a -> b -> c
+-- uncurry  :: (a -> b -> c) -> (a, b) -> c
 --
 -- -- pairlists
--- zip   :: [a] -> [b] -> [(a, b)];
--- unzip :: [(a, b)] -> ([a], [b]);
--- keys  :: [(a, b)] -> [a];
--- vals  :: [(a, b)] -> [b];
+-- zip   :: [a] -> [b] -> [(a, b)]
+-- unzip :: [(a, b)] -> ([a], [b])
+-- keys  :: [(a, b)] -> [a]
+-- vals  :: [(a, b)] -> [b]
 --
 -- -- functions over pairlists
--- filter_key :: (a -> Bool)  -> [(a, b)] -> [(a, b)];
--- filter_val :: (a -> Bool)  -> [(b, a)] -> [(b, a)];
--- map_key    :: (a -> b)     -> [(a, c)] -> [(b, c)];
--- map_val    :: (a -> b)     -> [(c, a)] -> [(c, b)];
--- with_keys  :: ([a] -> [b]) -> [(a, c)] -> [(b, c)];
--- with_vals  :: ([a] -> [b]) -> [(c, a)] -> [(c, b)];
+-- filter_key :: (a -> Bool)  -> [(a, b)] -> [(a, b)]
+-- filter_val :: (a -> Bool)  -> [(b, a)] -> [(b, a)]
+-- map_key    :: (a -> b)     -> [(a, c)] -> [(b, c)]
+-- map_val    :: (a -> b)     -> [(c, a)] -> [(c, b)]
+-- with_keys  :: ([a] -> [b]) -> [(a, c)] -> [(b, c)]
+-- with_vals  :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
 --
 -- -- -- Laws
 -- -- with_vals id xs == xs
@@ -99,47 +99,47 @@ id Cpp :: a -> a;
 -- -- filter_key true xs == xs
 -- -- filter_key false xs == []
 --
--- context_filter_key :: (a -> b -> (a, Bool)) -> a -> [(b,c)] -> [(b,c)];
--- context_filter_val :: (a -> b -> (a, Bool)) -> a -> [(c,b)] -> [(c,b)];
+-- context_filter_key :: (a -> b -> (a, Bool)) -> a -> [(b,c)] -> [(b,c)]
+-- context_filter_val :: (a -> b -> (a, Bool)) -> a -> [(c,b)] -> [(c,b)]
 --
 -- -- functional tools
--- flip  :: (a -> b -> c) -> b -> a -> c;
--- until :: (a -> Bool) -> (a -> a) -> a -> a;
+-- flip  :: (a -> b -> c) -> b -> a -> c
+-- until :: (a -> Bool) -> (a -> a) -> a -> a
 --
 -- -- foldable functions - replace once I get typeclasses working
--- length    :: [a] -> Int;
--- reverse   :: [a] -> [a];
--- concat    :: [[a]] -> [a];
--- concatMap :: (a -> [b]) -> [a] -> [b];
+-- length    :: [a] -> Int
+-- reverse   :: [a] -> [a]
+-- concat    :: [[a]] -> [a]
+-- concatMap :: (a -> [b]) -> [a] -> [b]
 --
 -- -- list creation
--- replicate :: Int -> a -> [a];
+-- replicate :: Int -> a -> [a]
 --
 -- -- general list processing
--- head :: [a] -> a;        -- [1,2,3] => 1
--- last :: [a] -> a;        -- [1,2,3] => 3
--- tail :: [a] -> [a];      -- [1,2,3] => [2,3]
--- init :: [a] -> [a];      -- [1,2,3] => [1,2]
--- get  :: Int -> [a] -> a; -- get 1 [1,2,3] => 2
--- take :: Int -> [a] -> [a];
--- drop :: Int -> [a] -> [a];
--- takeWhile :: (a -> Bool) -> [a] -> [a];
--- dropWhile :: (a -> Bool) -> [a] -> [a];
--- span      :: (a -> Bool) -> [a] -> ([a], [a]);
--- break     :: (a -> Bool) -> [a] -> ([a], [a]);
--- splitAt   :: Int -> [a] -> ([a], [a]);
+-- head :: [a] -> a        -- [1,2,3] => 1
+-- last :: [a] -> a        -- [1,2,3] => 3
+-- tail :: [a] -> [a]      -- [1,2,3] => [2,3]
+-- init :: [a] -> [a]      -- [1,2,3] => [1,2]
+-- get  :: Int -> [a] -> a -- get 1 [1,2,3] => 2
+-- take :: Int -> [a] -> [a]
+-- drop :: Int -> [a] -> [a]
+-- takeWhile :: (a -> Bool) -> [a] -> [a]
+-- dropWhile :: (a -> Bool) -> [a] -> [a]
+-- span      :: (a -> Bool) -> [a] -> ([a], [a])
+-- break     :: (a -> Bool) -> [a] -> ([a], [a])
+-- splitAt   :: Int -> [a] -> ([a], [a])
 --
 -- -- string processing
--- lines   :: Str -> [Str];
--- words   :: Str -> [Str];
--- unlines :: [Str] -> Str;
--- unwords :: [Str] -> Str;
+-- lines   :: Str -> [Str]
+-- words   :: Str -> [Str]
+-- unlines :: [Str] -> Str
+-- unwords :: [Str] -> Str
 --
 -- -- accumulating folds
--- scanl  :: (b -> a -> b) -> b -> [a] -> [b];
--- scanr  :: (a -> b -> b) -> b -> [a] -> [b];
--- scanl1 :: (a -> a -> a) -> [a] -> [a];
--- scanr1 :: (a -> a -> a) -> [a] -> [a];
+-- scanl  :: (b -> a -> b) -> b -> [a] -> [b]
+-- scanr  :: (a -> b -> b) -> b -> [a] -> [b]
+-- scanl1 :: (a -> a -> a) -> [a] -> [a]
+-- scanr1 :: (a -> a -> a) -> [a] -> [a]
 
 
 -- NOTE: After a system for numeric casting is added to morloc, replace the
@@ -158,42 +158,42 @@ id Cpp :: a -> a;
 -- independent types.
 
 -- arithmetic operators - these are all
--- add :: (Num a) => a -> a -> a;
-add :: Num -> Num -> Num;
-add Cpp :: "double" -> "double" -> "double";
+-- add :: (Num a) => a -> a -> a
+add :: Num -> Num -> Num
+add Cpp :: "double" -> "double" -> "double"
 
--- sub :: (Num a) => a -> a -> a;
-sub :: Num -> Num -> Num;
-sub Cpp :: "double" -> "double" -> "double";
+-- sub :: (Num a) => a -> a -> a
+sub :: Num -> Num -> Num
+sub Cpp :: "double" -> "double" -> "double"
 
--- mul :: (Num a) => a -> a -> a;
-mul :: Num -> Num -> Num;
-mul Cpp :: "double" -> "double" -> "double";
+-- mul :: (Num a) => a -> a -> a
+mul :: Num -> Num -> Num
+mul Cpp :: "double" -> "double" -> "double"
 
--- div :: (Num a) => a -> a -> a;
-div :: Num -> Num -> Num;
-div Cpp :: "double" -> "double" -> "double";
+-- div :: (Num a) => a -> a -> a
+div :: Num -> Num -> Num
+div Cpp :: "double" -> "double" -> "double"
 
--- mod :: (Num a) => a -> a -> a;
-div :: Num -> Num -> Num;
-mod Cpp :: "double" -> "double" -> "double";
+-- mod :: (Num a) => a -> a -> a
+div :: Num -> Num -> Num
+mod Cpp :: "double" -> "double" -> "double"
 
 
-map :: (a -> b) -> [a] -> [b];
+map :: (a -> b) -> [a] -> [b]
 map Cpp :: (a -> b) -> "std::vector<$1>" a
-                    -> "std::vector<$1>" b;
+                    -> "std::vector<$1>" b
 
-zipWith     :: (a -> b -> c) -> [a] -> [b] -> [c];
+zipWith     :: (a -> b -> c) -> [a] -> [b] -> [c]
 zipWith Cpp :: (a -> b -> c) -> "std::vector<$1>" a
                              -> "std::vector<$1>" b
-                             -> "std::vector<$1>" c;
+                             -> "std::vector<$1>" c
 
-fold     :: (b -> a -> b) -> b -> [a] -> b;
-fold Cpp :: (b -> a -> b) -> b -> "std::vector<$1>" a -> b;
+fold     :: (b -> a -> b) -> b -> [a] -> b
+fold Cpp :: (b -> a -> b) -> b -> "std::vector<$1>" a -> b
 
-enumerateWith     :: (a -> Int -> b) -> [a] -> [b]; 
+enumerateWith     :: (a -> Int -> b) -> [a] -> [b] 
 enumerateWith Cpp :: (a -> "int" -> b) -> "std::vector<$1>" a
-                                       -> "std::vector<$1>" b;
+                                       -> "std::vector<$1>" b
 
 
 -------------------------------------------------------------------------------
@@ -203,28 +203,28 @@ enumerateWith Cpp :: (a -> "int" -> b) -> "std::vector<$1>" a
 
 
 -- pairlists
-zip   :: [a] -> [b] -> [(a, b)];
-unzip :: [(a, b)] -> ([a], [b]);
-keys  :: [(a, b)] -> [a];
-vals  :: [(a, b)] -> [b];
-zip   Cpp :: [a] -> [b] -> [(a, b)];
-unzip Cpp :: [(a, b)] -> ([a], [b]);
-keys  Cpp :: [(a, b)] -> [a];
-vals  Cpp :: [(a, b)] -> [b];
+zip   :: [a] -> [b] -> [(a, b)]
+unzip :: [(a, b)] -> ([a], [b])
+keys  :: [(a, b)] -> [a]
+vals  :: [(a, b)] -> [b]
+zip   Cpp :: [a] -> [b] -> [(a, b)]
+unzip Cpp :: [(a, b)] -> ([a], [b])
+keys  Cpp :: [(a, b)] -> [a]
+vals  Cpp :: [(a, b)] -> [b]
 
 -- functions over pairlists
-filter_key :: (a -> Bool)  -> [(a, b)] -> [(a, b)];
-filter_val :: (a -> Bool)  -> [(b, a)] -> [(b, a)];
-map_key    :: (a -> b)     -> [(a, c)] -> [(b, c)];
-map_val    :: (a -> b)     -> [(c, a)] -> [(c, b)];
-with_keys  :: ([a] -> [b]) -> [(a, c)] -> [(b, c)];
-with_vals  :: ([a] -> [b]) -> [(c, a)] -> [(c, b)];
-filter_key Cpp :: (a -> Bool)  -> [(a, b)] -> [(a, b)];
-filter_val Cpp :: (a -> Bool)  -> [(b, a)] -> [(b, a)];
-map_key    Cpp :: (a -> b)     -> [(a, c)] -> [(b, c)];
-map_val    Cpp :: (a -> b)     -> [(c, a)] -> [(c, b)];
-with_keys  Cpp :: ([a] -> [b]) -> [(a, c)] -> [(b, c)];
-with_vals  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)];
+filter_key :: (a -> Bool)  -> [(a, b)] -> [(a, b)]
+filter_val :: (a -> Bool)  -> [(b, a)] -> [(b, a)]
+map_key    :: (a -> b)     -> [(a, c)] -> [(b, c)]
+map_val    :: (a -> b)     -> [(c, a)] -> [(c, b)]
+with_keys  :: ([a] -> [b]) -> [(a, c)] -> [(b, c)]
+with_vals  :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
+filter_key Cpp :: (a -> Bool)  -> [(a, b)] -> [(a, b)]
+filter_val Cpp :: (a -> Bool)  -> [(b, a)] -> [(b, a)]
+map_key    Cpp :: (a -> b)     -> [(a, c)] -> [(b, c)]
+map_val    Cpp :: (a -> b)     -> [(c, a)] -> [(c, b)]
+with_keys  Cpp :: ([a] -> [b]) -> [(a, c)] -> [(b, c)]
+with_vals  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
 
 
 -------------------------------------------------------------------------------
@@ -239,15 +239,13 @@ source Cpp from "data.hpp" (
   , "morloc_unpackMap" as unpackMap
 )
 
-export Map;
+export Map
 
-type Cpp (Map key val) = "std::map<$1,$2>" key val;
+type Cpp (Map key val) = "std::map<$1,$2>" key val
 
 -- These do not need to be exported (and indeed should not be)
-packMap :: pack => ([key],[val]) -> Map key val;
-packMap Cpp :: pack => ([key],[val]) -> "std::map<$1,$2>" key val;
+packMap :: pack => ([key],[val]) -> Map key val
+packMap Cpp :: pack => ([key],[val]) -> "std::map<$1,$2>" key val
 
-unpackMap :: unpack => Map key val -> ([key],[val]);
-unpackMap Cpp :: unpack => "std::map<$1,$2>" key val -> ([key],[val]);
-
-}
+unpackMap :: unpack => Map key val -> ([key],[val])
+unpackMap Cpp :: unpack => "std::map<$1,$2>" key val -> ([key],[val])
