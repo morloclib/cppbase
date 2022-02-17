@@ -2,13 +2,13 @@ module cppbase
 
 import conventions
 
-type Cpp Num = "double"
+type Cpp Real = "double"
 type Cpp Int = "int"
 type Cpp Str = "std::string"
 type Cpp Bool = "bool"
 
 export Map
-export Num
+export Real
 export Int
 export Str
 export Bool
@@ -65,19 +65,19 @@ source Cpp from "core.hpp"
 id Cpp :: a -> a
 
 -- arithmetic operators - these are all
--- add :: (Num a) => a -> a -> a
+-- add :: (Real a) => a -> a -> a
 add Cpp :: "double" -> "double" -> "double"
 
--- sub :: (Num a) => a -> a -> a
+-- sub :: (Real a) => a -> a -> a
 sub Cpp :: "double" -> "double" -> "double"
 
--- mul :: (Num a) => a -> a -> a
+-- mul :: (Real a) => a -> a -> a
 mul Cpp :: "double" -> "double" -> "double"
 
--- div :: (Num a) => a -> a -> a
+-- div :: (Real a) => a -> a -> a
 div Cpp :: "double" -> "double" -> "double"
 
--- mod :: (Num a) => a -> a -> a
+-- mod :: (Real a) => a -> a -> a
 mod Cpp :: "double" -> "double" -> "double"
 
 
