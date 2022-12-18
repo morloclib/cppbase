@@ -28,12 +28,12 @@ export zip
 export unzip
 export keys
 export vals
-export filter_key
-export filter_val
-export map_key
-export map_val
-export with_keys
-export with_vals
+export filterKey
+export filterVal
+export mapKey
+export mapVal
+export withKeys
+export withVals
 
 source Cpp from "core.hpp"
  (
@@ -54,12 +54,12 @@ source Cpp from "core.hpp"
  , "morloc_unzip" as unzip
  , "morloc_keys" as keys
  , "morloc_vals" as vals
- , "morloc_filter_key" as filter_key
- , "morloc_filter_val" as filter_val
- , "morloc_map_key" as map_key
- , "morloc_map_val" as map_val
- , "morloc_with_keys" as with_keys
- , "morloc_with_vals" as with_vals
+ , "morloc_filter_key" as filterKey
+ , "morloc_filter_val" as filterVal
+ , "morloc_map_key" as mapKey
+ , "morloc_map_val" as mapVal
+ , "morloc_with_keys" as withKeys
+ , "morloc_with_vals" as withVals
  )
 
 id Cpp :: a -> a
@@ -107,12 +107,12 @@ keys  Cpp :: [(a, b)] -> [a]
 vals  Cpp :: [(a, b)] -> [b]
 
 -- functions over pairlists
-filter_key Cpp :: (a -> Bool)  -> [(a, b)] -> [(a, b)]
-filter_val Cpp :: (a -> Bool)  -> [(b, a)] -> [(b, a)]
-map_key    Cpp :: (a -> b)     -> [(a, c)] -> [(b, c)]
-map_val    Cpp :: (a -> b)     -> [(c, a)] -> [(c, b)]
-with_keys  Cpp :: ([a] -> [b]) -> [(a, c)] -> [(b, c)]
-with_vals  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
+filterKey Cpp :: (a -> Bool)  -> [(a, b)] -> [(a, b)]
+filterVal Cpp :: (a -> Bool)  -> [(b, a)] -> [(b, a)]
+mapKey    Cpp :: (a -> b)     -> [(a, c)] -> [(b, c)]
+mapVal    Cpp :: (a -> b)     -> [(c, a)] -> [(c, b)]
+withKeys  Cpp :: ([a] -> [b]) -> [(a, c)] -> [(b, c)]
+withVals  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
 
 
 -------------------------------------------------------------------------------
