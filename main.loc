@@ -23,6 +23,7 @@ export add
 export sub
 export mul
 export div
+export neg
 export mod
 
 export zip
@@ -44,6 +45,7 @@ source Cpp from "core.hpp"
  , "morloc_sub" as sub
  , "morloc_mul" as mul
  , "morloc_div" as div
+ , "morloc_neg" as neg
  , "morloc_mod" as mod
  -- higher order functions
  , "morloc_at" as at
@@ -78,6 +80,8 @@ mul Cpp :: "double" -> "double" -> "double"
 
 -- div :: (Real a) => a -> a -> a
 div Cpp :: "double" -> "double" -> "double"
+
+neg Cpp :: "double" -> "double"
 
 -- mod :: (Real a) => a -> a -> a
 mod Cpp :: "double" -> "double" -> "double"

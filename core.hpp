@@ -242,6 +242,11 @@ C morloc_div(A x, B y){
     return x / y;
 }
 
+template <class A, class B>
+C morloc_div(A x){
+    return (-1) * x;
+}
+
 template <class A, class B, class C>
 C morloc_mod(A x, B y){
     return x % y;
