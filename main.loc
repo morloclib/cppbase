@@ -14,6 +14,7 @@ export Str
 export Bool
 
 export id
+export at
 export enumerateWith
 export fold
 export map
@@ -45,6 +46,7 @@ source Cpp from "core.hpp"
  , "morloc_div" as div
  , "morloc_mod" as mod
  -- higher order functions
+ , "morloc_at" as at
  , "morloc_map" as map
  , "morloc_zipWith" as zipWith
  , "morloc_fold" as fold
@@ -80,6 +82,8 @@ div Cpp :: "double" -> "double" -> "double"
 -- mod :: (Real a) => a -> a -> a
 mod Cpp :: "double" -> "double" -> "double"
 
+
+at Cpp :: "int" -> "std::vector<$1>" a -> a
 
 map Cpp :: (a -> b) -> "std::vector<$1>" a
                     -> "std::vector<$1>" b
@@ -127,7 +131,6 @@ source Cpp from "data.hpp"
  , "morloc_unpackMap" as unpackMap
  )
 
-export Map
 
 type Cpp (Map key val) = "std::map<$1,$2>" key val
 

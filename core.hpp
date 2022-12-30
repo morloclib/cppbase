@@ -108,6 +108,11 @@ std::vector<std::tuple<A,B>> morloc_filter_val(
     return ys;
 }
 
+template <class A>
+A morloc_at(int i, std::vector<A> xs){
+    return xs[i];
+}
+
 // map_key    :: forall a b c . (a -> b)     -> [(a, c)] -> [(b, c)];
 template <class A, class B, class C>
 std::vector<std::tuple<C,B>> morloc_map_key(
