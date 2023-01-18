@@ -243,7 +243,7 @@ C morloc_div(A x, B y){
 }
 
 template <class A, class B>
-C morloc_div(A x){
+B morloc_neg(A x){
     return (-1) * x;
 }
 
