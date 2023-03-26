@@ -37,6 +37,14 @@ export mapVal
 export withKeys
 export withVals
 
+export eq
+export filter
+export gt
+export head
+export ifelse
+export length
+export unique
+
 source Cpp from "core.hpp"
  (
    "morloc_id" as id
@@ -64,6 +72,14 @@ source Cpp from "core.hpp"
  , "morloc_map_val" as mapVal
  , "morloc_with_keys" as withKeys
  , "morloc_with_vals" as withVals
+ -- new functions for the paper case study
+ , "morloc_unique" as unique
+ , "morloc_ifelse" as ifelse
+ , "morloc_eq" as eq
+ , "morloc_head" as head
+ , "morloc_filter" as filter
+ , "morloc_gt" as gt
+ , "morloc_length" as length
  )
 
 id Cpp :: a -> a
@@ -122,6 +138,20 @@ mapVal    Cpp :: (a -> b)     -> [(c, a)] -> [(c, b)]
 withKeys  Cpp :: ([a] -> [b]) -> [(a, c)] -> [(b, c)]
 withVals  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
 
+
+
+-- functions added for case study (reorganize these later)
+unique Cpp :: [a] -> [a]
+ifelse Cpp :: Bool -> a -> a
+length :: [a] -> Int
+head :: [a] -> a
+filter :: (a -> Bool) -> [a] -> [a]
+
+-- generalize when typeclasses become available
+-- should be:
+--    eq :: (Ord a) => a -> a -> Bool
+eq :: Int -> Int -> Bool
+gt :: Int -> Int -> Bool
 
 -------------------------------------------------------------------------------
 --                 Pack and Unpack internal functions

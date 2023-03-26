@@ -291,4 +291,67 @@ std::vector<B> morloc_enumerateWith(std::function<B(A,Index)> f, std::vector<A> 
     return ys;
 }
 
+
+// TODO: finish this implementation! I don't have internet and can't remember
+// the methods of the C++ set type. Mutability is also a concern here.
+//
+// unique Cpp :: [a] -> [a]
+template <class A>
+std::vector<A> morloc_unique(std::vector<A> xs){
+    // create set from xs
+    // create vector from set 
+    return xs;
+}
+
+// ifelse Cpp :: Bool -> a -> a
+template <class A>
+A morloc_ifelse(bool cond, A x, A y){
+    if (cond) {
+        return x;
+    } else {
+        return y;
+    }
+}
+
+// head :: [a] -> a
+template <class A>
+A morloc_head(A x
+){
+    return x[0];
+}
+
+// filter :: (a -> Bool) -> [a] -> [a]
+template <class A>
+std::vector<A> morloc_filter(
+    std::function<bool(A)> f,
+    std::vector<A> xs
+){
+    std::vector<A> ys;
+    for(size_t i = 0; i < xs.size(); i++){
+        if (f(xs[i])){
+            ys.push_back(xs[i]);
+        }
+    }
+    return ys;
+}
+
+// gt :: a -> a -> Bool
+template <class A>
+bool morloc_gt(A x, A y){
+    return x > y;
+}
+
+// eq :: a -> a -> Bool
+template <class A>
+bool morloc_eq(A x, A y){
+    return x == y;
+}
+
+// strLength :: Str -> Int
+template <class A>
+int morloc_length(A x){
+    return x.size();
+}
+
+
 #endif
