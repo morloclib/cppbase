@@ -139,9 +139,9 @@ std::vector<std::tuple<A,C>> morloc_map_val(
     return ys;
 }
 
-// with_keys  :: forall a b c . ([a] -> [b]) -> [(a, c)] -> [(b, c)];
+// with_fsts  :: forall a b c . ([a] -> [b]) -> [(a, c)] -> [(b, c)];
 template <class A, class B, class C>
-std::vector<std::tuple<C,A>> morloc_with_keys(
+std::vector<std::tuple<C,A>> morloc_with_fsts(
     std::function<std::vector<C>(std::vector<A>)> f,
     std::vector<std::tuple<A,B>> xs
 ){
@@ -154,9 +154,9 @@ std::vector<std::tuple<C,A>> morloc_with_keys(
     return ys;
 }
 
-// with_vals  :: forall a b c . ([a] -> [b]) -> [(c, a)] -> [(c, b)];
+// with_snds  :: forall a b c . ([a] -> [b]) -> [(c, a)] -> [(c, b)];
 template <class A, class B, class C>
-std::vector<std::tuple<A,C>> morloc_with_vals(
+std::vector<std::tuple<A,C>> morloc_with_snds(
     std::function<std::vector<C>(std::vector<B>)> f,
     std::vector<std::tuple<A,B>> xs
 ){
@@ -171,8 +171,6 @@ std::vector<std::tuple<A,C>> morloc_with_vals(
 
 
 // -- -- Laws
-// -- with_vals id xs == xs
-// -- with_keys id xs == xs
 // -- map_val id xs == xs
 // -- map_key id xs == xs
 // -- filter_val true xs == xs
@@ -352,6 +350,5 @@ template <class A>
 int morloc_length(A x){
     return x.size();
 }
-
 
 #endif

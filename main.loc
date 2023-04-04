@@ -1,4 +1,4 @@
-module cppbase
+module cppbase (*)
 
 import conventions
 
@@ -6,44 +6,6 @@ type Cpp Real = "double"
 type Cpp Int = "int"
 type Cpp Str = "std::string"
 type Cpp Bool = "bool"
-
-export Map
-export Real
-export Int
-export Str
-export Bool
-
-export id
-export at
-export enumerateWith
-export fold
-export map
-export zipWith
-export add
-export sub
-export mul
-export div
-export neg
-export mod
-
-export zip
-export unzip
-export keys
-export vals
-export filterKey
-export filterVal
-export mapKey
-export mapVal
-export withKeys
-export withVals
-
-export eq
-export filter
-export gt
-export head
-export ifelse
-export length
-export unique
 
 source Cpp from "core.hpp"
  (
@@ -70,8 +32,8 @@ source Cpp from "core.hpp"
  , "morloc_filter_val" as filterVal
  , "morloc_map_key" as mapKey
  , "morloc_map_val" as mapVal
- , "morloc_with_keys" as withKeys
- , "morloc_with_vals" as withVals
+ , "morloc_with_fsts" as withFsts
+ , "morloc_with_snds" as withSnds
  -- new functions for the paper case study
  , "morloc_unique" as unique
  , "morloc_ifelse" as ifelse
@@ -80,6 +42,7 @@ source Cpp from "core.hpp"
  , "morloc_filter" as filter
  , "morloc_gt" as gt
  , "morloc_length" as length
+ , "morloc_length" as lengthS
  )
 
 id Cpp :: a -> a
@@ -137,13 +100,15 @@ mapKey    Cpp :: (a -> b)     -> [(a, c)] -> [(b, c)]
 mapVal    Cpp :: (a -> b)     -> [(c, a)] -> [(c, b)]
 withKeys  Cpp :: ([a] -> [b]) -> [(a, c)] -> [(b, c)]
 withVals  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
-
+withFsts  Cpp :: ([a] -> [b]) -> [(a, c)] -> [(b, c)]
+withSnds  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
 
 
 -- functions added for case study (reorganize these later)
 unique Cpp :: [a] -> [a]
 ifelse Cpp :: Bool -> a -> a
 length :: [a] -> Int
+lengthS :: Str -> Int
 head :: [a] -> a
 filter :: (a -> Bool) -> [a] -> [a]
 
@@ -164,7 +129,6 @@ source Cpp from "data.hpp"
  ( "morloc_packMap" as packMap
  , "morloc_unpackMap" as unpackMap
  )
-
 
 type Cpp (Map key val) = "std::map<$1,$2>" key val
 
