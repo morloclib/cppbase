@@ -1,5 +1,5 @@
 all:
-	g++ -std=c++11 -g -Wall -O0 *.cpp *.hpp
+	g++ -std=c++17 -g -Wall -O0 *.cpp *.hpp
 
 .PHONY: clean
 clean:

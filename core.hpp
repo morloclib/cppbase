@@ -7,6 +7,13 @@
 #include <utility>
 #include <assert.h>
 
+
+template <class A>
+A morloc_run(std::function<A()> f){
+    A x = f();
+    return(x);
+}
+
 template <class A>
 A morloc_id(A x){
     return(x);
@@ -42,7 +49,7 @@ std::pair<B,A> morloc_pair(std::function<B(A)> f, A a){
 template <class A, class B>
 std::vector<std::tuple<A,B>> morloc_zip(std::vector<A> a, std::vector<B> b){
     std::vector<std::tuple<A,B>> out;
-    for (size_t i = 0; i < a.size() && i < b.size(); i++){
+    for (std::size_t i = 0; i < a.size() && i < b.size(); i++){
         out.push_back(std::make_tuple(a, b));
     }
     return out;
@@ -53,7 +60,7 @@ template <class A, class B>
 std::tuple<std::vector<A>,std::vector<B>> morloc_unzip(std::vector<std::tuple<A,B>> xs){
     std::vector<A> a;
     std::vector<B> b;
-    for(size_t i = 0; i < xs.size(); i++){
+    for(std::size_t i = 0; i < xs.size(); i++){
        a.push_back(std::get<0>(xs[i])); 
        b.push_back(std::get<1>(xs[i])); 
     }
@@ -64,7 +71,7 @@ std::tuple<std::vector<A>,std::vector<B>> morloc_unzip(std::vector<std::tuple<A,
 template <class A, class B>
 std::vector<A> morloc_keys(std::vector<std::tuple<A,B>> xs){
     std::vector<A> out;
-    for (size_t i = 0; i < xs.size(); i++){
+    for (std::size_t i = 0; i < xs.size(); i++){
         out.push_back(std::get<0>(xs[i]));
     }
     return out;
@@ -74,7 +81,7 @@ std::vector<A> morloc_keys(std::vector<std::tuple<A,B>> xs){
 template <class A, class B>
 std::vector<A> morloc_vals(std::vector<std::tuple<A,B>> xs){
     std::vector<A> out;
-    for (size_t i = 0; i < xs.size(); i++){
+    for (std::size_t i = 0; i < xs.size(); i++){
         out.push_back(std::get<1>(xs[i]));
     }
     return out;
@@ -87,7 +94,7 @@ std::vector<std::tuple<A,B>> morloc_filter_key(
     std::vector<std::tuple<A,B>> xs
 ){
     std::vector<std::tuple<A,B>> ys;
-    for(size_t i = 0; i < xs.size(); i++){
+    for(std::size_t i = 0; i < xs.size(); i++){
         if(keep(std::get<0>(xs[i])))
             ys.push_back(xs[i]);
     }
@@ -101,7 +108,7 @@ std::vector<std::tuple<A,B>> morloc_filter_val(
     std::vector<std::tuple<A,B>> xs
 ){
     std::vector<std::tuple<A,B>> ys;
-    for(size_t i = 0; i < xs.size(); i++){
+    for(std::size_t i = 0; i < xs.size(); i++){
         if(keep(std::get<1>(xs[i])))
             ys.push_back(xs[i]);
     }
@@ -120,7 +127,7 @@ std::vector<std::tuple<C,B>> morloc_map_key(
     std::vector<std::tuple<A,B>> xs
 ){
     std::vector<std::tuple<A,C>> ys;
-    for(size_t i = 0; i < xs.size(); i++){
+    for(std::size_t i = 0; i < xs.size(); i++){
         ys.push_back(std::make_tuple(f(std::get<0>(xs[i])), std::get<1>(xs[i])));
     }
     return ys;
@@ -133,7 +140,7 @@ std::vector<std::tuple<A,C>> morloc_map_val(
     std::vector<std::tuple<A,B>> xs
 ){
     std::vector<std::tuple<A,C>> ys;
-    for(size_t i = 0; i < xs.size(); i++){
+    for(std::size_t i = 0; i < xs.size(); i++){
         ys.push_back(std::make_tuple(std::get<0>(xs[i]), f(std::get<1>(xs[i]))));
     }
     return ys;
@@ -148,7 +155,7 @@ std::vector<std::tuple<C,A>> morloc_with_fsts(
     std::vector<std::tuple<C,A>> ys;
     std::vector<C> newkeys = f(morloc_keys(xs));
     assert(newkeys.size() == xs.size());
-    for(size_t i = 0; i < newkeys.size(); i++){
+    for(std::size_t i = 0; i < newkeys.size(); i++){
         ys.push_back(std::make_tuple(newkeys[i], std::get<1>(xs[i])));
     }
     return ys;
@@ -163,7 +170,7 @@ std::vector<std::tuple<A,C>> morloc_with_snds(
     std::vector<std::tuple<A,C>> ys;
     std::vector<C> newvals = f(morloc_vals(xs));
     assert(newvals.size() == xs.size());
-    for(size_t i = 0; i < newvals.size(); i++){
+    for(std::size_t i = 0; i < newvals.size(); i++){
         ys.push_back(std::make_tuple(std::get<0>(xs[i]), newvals[i]));
     }
     return ys;
@@ -264,9 +271,9 @@ std::vector<C> morloc_zipWith(
         std::vector<B> ys
     )
 {
-    size_t N = std::min(xs.size(), ys.size());
+    std::size_t N = std::min(xs.size(), ys.size());
     std::vector<C> zs(N);
-    for(size_t i = 0; i < N; i++){
+    for(std::size_t i = 0; i < N; i++){
         zs[i] = f(xs[i], ys[i]);
     }
     return zs;
@@ -274,7 +281,7 @@ std::vector<C> morloc_zipWith(
 
 template <class A, class B>
 B morloc_fold(std::function<B(B,A)> f, B y, std::vector<A> xs){
-    for(size_t i=0; i < xs.size(); i++){
+    for(std::size_t i=0; i < xs.size(); i++){
         y = f(y, xs[i]);
     }
     return y;
@@ -325,7 +332,7 @@ std::vector<A> morloc_filter(
     std::vector<A> xs
 ){
     std::vector<A> ys;
-    for(size_t i = 0; i < xs.size(); i++){
+    for(std::size_t i = 0; i < xs.size(); i++){
         if (f(xs[i])){
             ys.push_back(xs[i]);
         }

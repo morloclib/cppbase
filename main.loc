@@ -1,15 +1,23 @@
 module cppbase (*)
 
-import conventions
-
 type Cpp Real = "double"
 type Cpp Int = "int"
 type Cpp Str = "std::string"
 type Cpp Bool = "bool"
+type Cpp (List a) = "std::vector<$1>" a
+type Cpp (Tuple2 a b) = "std::tuple<$1,$2>" a b
+type Cpp (Tuple3 a b c) = "std::tuple<$1,$2,$3>" a b c
+type Cpp (Tuple4 a b c d) = "std::tuple<$1,$2,$3,$4>" a b c d
+type Cpp (Tuple5 a b c d e) = "std::tuple<$1,$2,$3,$4,$5>" a b c d e
+
+
+-- Import conventions and then source C++ implementations for all of them
+-- Derive the Cpp signatures
+import conventions
 
 source Cpp from "core.hpp"
- (
-   "morloc_id" as id
+ ( "morloc_run" as run
+ , "morloc_id" as id
  -- arithmetic
  , "morloc_add" as add
  , "morloc_sub" as sub
@@ -37,86 +45,13 @@ source Cpp from "core.hpp"
  -- new functions for the paper case study
  , "morloc_unique" as unique
  , "morloc_ifelse" as ifelse
- , "morloc_eq" as eq
  , "morloc_head" as head
  , "morloc_filter" as filter
+ , "morloc_eq" as eq
  , "morloc_gt" as gt
  , "morloc_length" as length
  , "morloc_length" as lengthS
  )
-
-id Cpp :: a -> a
-
--- arithmetic operators - these are all
--- add :: (Real a) => a -> a -> a
-add Cpp :: "double" -> "double" -> "double"
-
--- sub :: (Real a) => a -> a -> a
-sub Cpp :: "double" -> "double" -> "double"
-
--- mul :: (Real a) => a -> a -> a
-mul Cpp :: "double" -> "double" -> "double"
-
--- div :: (Real a) => a -> a -> a
-div Cpp :: "double" -> "double" -> "double"
-
-neg Cpp :: "double" -> "double"
-
--- mod :: (Real a) => a -> a -> a
-mod Cpp :: "double" -> "double" -> "double"
-
-
-at Cpp :: "int" -> "std::vector<$1>" a -> a
-
-map Cpp :: (a -> b) -> "std::vector<$1>" a
-                    -> "std::vector<$1>" b
-
-zipWith Cpp :: (a -> b -> c) -> "std::vector<$1>" a
-                             -> "std::vector<$1>" b
-                             -> "std::vector<$1>" c
-
-fold Cpp :: (b -> a -> b) -> b -> "std::vector<$1>" a -> b
-
-enumerateWith Cpp :: (a -> "int" -> b) -> "std::vector<$1>" a
-                                       -> "std::vector<$1>" b
-
-
--------------------------------------------------------------------------------
---                       Pair-list functions
--------------------------------------------------------------------------------
-
-
-
--- pairlists
-zip   Cpp :: [a] -> [b] -> [(a, b)]
-unzip Cpp :: [(a, b)] -> ([a], [b])
-keys  Cpp :: [(a, b)] -> [a]
-vals  Cpp :: [(a, b)] -> [b]
-
--- functions over pairlists
-filterKey Cpp :: (a -> Bool)  -> [(a, b)] -> [(a, b)]
-filterVal Cpp :: (a -> Bool)  -> [(b, a)] -> [(b, a)]
-mapKey    Cpp :: (a -> b)     -> [(a, c)] -> [(b, c)]
-mapVal    Cpp :: (a -> b)     -> [(c, a)] -> [(c, b)]
-withKeys  Cpp :: ([a] -> [b]) -> [(a, c)] -> [(b, c)]
-withVals  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
-withFsts  Cpp :: ([a] -> [b]) -> [(a, c)] -> [(b, c)]
-withSnds  Cpp :: ([a] -> [b]) -> [(c, a)] -> [(c, b)]
-
-
--- functions added for case study (reorganize these later)
-unique Cpp :: [a] -> [a]
-ifelse Cpp :: Bool -> a -> a
-length :: [a] -> Int
-lengthS :: Str -> Int
-head :: [a] -> a
-filter :: (a -> Bool) -> [a] -> [a]
-
--- generalize when typeclasses become available
--- should be:
---    eq :: (Ord a) => a -> a -> Bool
-eq :: Int -> Int -> Bool
-gt :: Int -> Int -> Bool
 
 -------------------------------------------------------------------------------
 --                 Pack and Unpack internal functions

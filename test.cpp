@@ -1,4 +1,5 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+#define DOCTEST_CONFIG_NO_POSIX_SIGNALS // Add this line
 #include "doctest.hpp"
 #include "core.hpp"
 #include "data.hpp"
@@ -8,6 +9,10 @@
 #include <sstream>
 #include <map>
 #include <utility>
+
+int test_run(){
+    return 5;
+}
 
 template <class A>
 A inc(A x){
@@ -58,6 +63,11 @@ TEST_CASE("Higher Order Functions"){
     std::vector<std::string> names = morloc_enumerateWith(makeNameFun, bases);
     std::vector<std::string> names_exp = {"asdf_0", "qwer_1", "wert_2"};
     CHECK(names == names_exp);
+}
+
+TEST_CASE("Control"){
+    int x = morloc_run(std::function<int()>(test_run));
+    CHECK(x == 5);
 }
 
 TEST_CASE("Serialization"){

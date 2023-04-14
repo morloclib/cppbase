@@ -12,7 +12,7 @@ std::map<A,B> morloc_packMap(std::tuple<std::vector<A>,std::vector<B>> items){
     std::vector<A> a = std::get<0>(items);
     std::vector<B> b = std::get<1>(items);
     assert(a.size() == b.size());
-    for(size_t i = 0; i < a.size(); i++){
+    for(std::size_t i = 0; i < a.size(); i++){
         m[a[i]] = b[i];
     }
     return m;
