@@ -31,6 +31,12 @@ source Cpp from "core.hpp"
  , "morloc_zipWith" as zipWith
  , "morloc_fold" as fold
  , "morloc_enumerateWith" as enumerateWith
+ -- tuples
+ , "morloc_fst" as fst
+ , "morloc_snd" as snd
+ , "morloc_fst3" as fst3
+ , "morloc_snd3" as snd3
+ , "morloc_thr3" as thr3
  -- pair-list functions
  , "morloc_zip" as zip
  , "morloc_unzip" as unzip
