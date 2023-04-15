@@ -355,22 +355,54 @@ std::vector<A> morloc_filter(
     return ys;
 }
 
-// gt :: a -> a -> Bool
-template <class A>
-bool morloc_gt(A x, A y){
-    return x > y;
-}
-
-// eq :: a -> a -> Bool
-template <class A>
-bool morloc_eq(A x, A y){
-    return x == y;
-}
-
 // strLength :: Str -> Int
 template <class A>
 int morloc_length(A x){
     return x.size();
+}
+
+
+template <class A>
+bool morloc_gt(A x, A y){
+   return x > y; 
+}
+
+template <class A>
+bool morloc_lt(A x, A y){
+   return x < y; 
+}
+
+template <class A>
+bool morloc_ge(A x, A y){
+   return x >= y; 
+}
+
+template <class A>
+bool morloc_le(A x, A y){
+   return x <= y; 
+}
+
+template <class A>
+bool morloc_eq(A x, A y){
+   return x == y; 
+}
+
+template <class A>
+bool morloc_ne(A x, A y){
+   return x != y; 
+}
+
+
+bool morloc_not(bool x){
+    return !x;
+}
+
+bool morloc_and(bool x, bool y){
+    return x && y;
+}
+
+bool morloc_or(bool x, bool y){
+    return x || y;
 }
 
 #endif

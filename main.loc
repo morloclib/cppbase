@@ -53,10 +53,18 @@ source Cpp from "core.hpp"
  , "morloc_ifelse" as ifelse
  , "morloc_head" as head
  , "morloc_filter" as filter
- , "morloc_eq" as eq
- , "morloc_gt" as gt
  , "morloc_length" as length
  , "morloc_length" as lengthS
+ -- comparators
+ , "morloc_gt" as gt
+ , "morloc_lt" as lt
+ , "morloc_ge" as ge
+ , "morloc_le" as le
+ , "morloc_eq" as eq
+ , "morloc_ne" as ne
+ , "morloc_not" as not
+ , "morloc_and" as and
+ , "morloc_or" as or
  )
 
 -------------------------------------------------------------------------------
