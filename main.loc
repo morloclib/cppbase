@@ -1,19 +1,5 @@
 module cppbase (*)
 
-type Cpp Real = "double"
-type Cpp Int = "int"
-type Cpp Str = "std::string"
-type Cpp Bool = "bool"
-type Cpp Unit = "void"
-type Cpp (List a) = "std::vector<$1>" a
-type Cpp (Tuple2 a b) = "std::tuple<$1,$2>" a b
-type Cpp (Tuple3 a b c) = "std::tuple<$1,$2,$3>" a b c
-type Cpp (Tuple4 a b c d) = "std::tuple<$1,$2,$3,$4>" a b c d
-type Cpp (Tuple5 a b c d e) = "std::tuple<$1,$2,$3,$4,$5>" a b c d e
-
-
--- Import conventions and then source C++ implementations for all of them
--- Derive the Cpp signatures
 import conventions
 
 source Cpp from "core.hpp"
@@ -32,6 +18,9 @@ source Cpp from "core.hpp"
  , "morloc_zipWith" as zipWith
  , "morloc_fold" as fold
  , "morloc_enumerateWith" as enumerateWith
+ -- combinators
+ , "morloc_seq" as seq
+ , "morloc_const" as const
  -- tuples
  , "morloc_fst" as fst
  , "morloc_snd" as snd

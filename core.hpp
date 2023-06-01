@@ -19,6 +19,16 @@ A morloc_id(A x){
     return(x);
 }
 
+template <class A, class B>
+A morloc_seq(A x, B y){
+    return(y);
+}
+
+template <class A, class B>
+A morloc_const(A x, B y){
+    return(x);
+}
+
 // tuple functions
 
 // fst      :: forall a b . (a, b) -> a ;
