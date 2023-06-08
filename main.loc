@@ -38,6 +38,7 @@ source Cpp from "core.hpp"
  , "morloc_map_val" as mapVal
  , "morloc_with_fsts" as withFsts
  , "morloc_with_snds" as withSnds
+ , "morloc_join" as join
  -- new functions for the paper case study
  , "morloc_unique" as unique
  , "morloc_ifelse" as ifelse

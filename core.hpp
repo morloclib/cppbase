@@ -201,6 +201,18 @@ std::vector<std::tuple<A,C>> morloc_with_snds(
     return ys;
 }
 
+template <class A>
+std::vector<A> morloc_join(std::vector<A> xs, std::vector<A> ys){
+    std::vector zs; 
+    for(std::size_t i = 0; i < xs.size(); i++){
+        zs.push_back(xs[i]);
+    }
+    for(std::size_t i = 0; i < ys.size(); i++){
+        zs.push_back(ys[i]);
+    }
+    return zs;
+}
+
 
 // -- -- Laws
 // -- map_val id xs == xs
