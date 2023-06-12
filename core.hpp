@@ -203,7 +203,7 @@ std::vector<std::tuple<A,C>> morloc_with_snds(
 
 template <class A>
 std::vector<A> morloc_join(std::vector<A> xs, std::vector<A> ys){
-    std::vector zs; 
+    std::vector<A> zs; 
     for(std::size_t i = 0; i < xs.size(); i++){
         zs.push_back(xs[i]);
     }
