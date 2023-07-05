@@ -6,6 +6,7 @@
 #include <functional>
 #include <utility>
 #include <assert.h>
+#include <map>
 
 
 template <class A>
@@ -58,31 +59,31 @@ C morloc_thr3(std::tuple<A,B,C> x){
 }
 
 
-// pair    :: forall a b . a -> b -> (a, b);
+// pair :: forall a b . a -> b -> (a, b);
 template <class A, class B>
 std::pair<A,B> morloc_pair(A x, B y){
     return(std::pair<A,B>(x,y));
 }
 
-// couple   :: forall a b . (a -> b) -> a -> (b, a);
+// couple :: forall a b . (a -> b) -> a -> (b, a);
 template <class A, class B>
 std::pair<B,A> morloc_pair(std::function<B(A)> f, A a){
     return(std::pair<B,A>(f(a),a));
 }
 
-// zip   :: forall a b . [a] -> [b] -> [(a, b)];
+// zip :: forall a b . [a] -> [b] -> [(a, b)];
 template <class A, class B>
-std::vector<std::tuple<A,B>> morloc_zip(std::vector<A> a, std::vector<B> b){
+std::vector<std::tuple<A,B>> morloc_zip(const std::vector<A> &a, const std::vector<B> &b){
     std::vector<std::tuple<A,B>> out;
     for (std::size_t i = 0; i < a.size() && i < b.size(); i++){
-        out.push_back(std::make_tuple(a, b));
+        out.push_back(std::make_tuple(a[i], b[i]));
     }
     return out;
 }
 
 // unzip :: forall a b . [(a, b)] -> ([a], [b]);
 template <class A, class B>
-std::tuple<std::vector<A>,std::vector<B>> morloc_unzip(std::vector<std::tuple<A,B>> xs){
+std::tuple<std::vector<A>,std::vector<B>> morloc_unzip(const std::vector<std::tuple<A,B>> &xs){
     std::vector<A> a;
     std::vector<B> b;
     for(std::size_t i = 0; i < xs.size(); i++){
@@ -92,83 +93,74 @@ std::tuple<std::vector<A>,std::vector<B>> morloc_unzip(std::vector<std::tuple<A,
     return std::make_tuple(a,b);
 }
 
-// keys  :: forall a b . [(a, b)] -> [a];
-template <class A, class B>
-std::vector<A> morloc_keys(std::vector<std::tuple<A,B>> xs){
-    std::vector<A> out;
-    for (std::size_t i = 0; i < xs.size(); i++){
-        out.push_back(std::get<0>(xs[i]));
+
+// keys :: Map a b -> [a]
+template <typename Key, typename Value>
+std::vector<Key> morloc_keys(const std::map<Key, Value>& map) {
+    std::vector<Key> result;
+    for (const auto& pair : map) {
+        result.push_back(pair.first);
     }
-    return out;
+    return result;
 }
 
-// vals  :: forall a b . [(a, b)] -> [b];
-template <class A, class B>
-std::vector<A> morloc_vals(std::vector<std::tuple<A,B>> xs){
-    std::vector<A> out;
-    for (std::size_t i = 0; i < xs.size(); i++){
-        out.push_back(std::get<1>(xs[i]));
+// vals :: Map a b -> [b]
+template <typename Key, typename Value>
+std::vector<Value> morloc_vals(const std::map<Key, Value>& map) {
+    std::vector<Value> result;
+    for (const auto& pair : map) {
+        result.push_back(pair.second);
     }
-    return out;
+    return result;
 }
 
-// filter_key :: forall a b   . (a -> Bool)  -> [(a, b)] -> [(a, b)];
-template <class A, class B>
-std::vector<std::tuple<A,B>> morloc_filter_key(
-    std::function<bool(A)> keep,
-    std::vector<std::tuple<A,B>> xs
-){
-    std::vector<std::tuple<A,B>> ys;
-    for(std::size_t i = 0; i < xs.size(); i++){
-        if(keep(std::get<0>(xs[i])))
-            ys.push_back(xs[i]);
+// mapKey :: (a -> a') -> Map a b -> Map a' b
+template <typename Key, typename Value, typename NewKey>
+std::map<NewKey, Value> morloc_map_key(std::function<NewKey(const Key&)> transform, const std::map<Key, Value>& map) {
+    std::map<NewKey, Value> result;
+    for (const auto& pair : map) {
+        result[transform(pair.first)] = pair.second;
     }
-    return ys;
+    return result;
 }
 
-// filter_val :: forall a b   . (a -> Bool)  -> [(b, a)] -> [(b, a)];
-template <class A, class B>
-std::vector<std::tuple<A,B>> morloc_filter_val(
-    std::function<bool(B)> keep,
-    std::vector<std::tuple<A,B>> xs
-){
-    std::vector<std::tuple<A,B>> ys;
-    for(std::size_t i = 0; i < xs.size(); i++){
-        if(keep(std::get<1>(xs[i])))
-            ys.push_back(xs[i]);
+// mapVal :: (b -> b') -> Map a b -> Map a b'
+template <typename Key, typename Value, typename NewValue>
+std::map<Key, NewValue> morloc_map_val(std::function<NewValue(const Value&)> transform, const std::map<Key, Value>& map) {
+    std::map<Key, NewValue> result;
+    for (const auto& pair : map) {
+        result[pair.first] = transform(pair.second);
     }
-    return ys;
+    return result;
+}
+
+// filterKey :: (k -> Bool) -> Map k v -> Map k v
+template <typename Key, typename Value>
+std::map<Key, Value> morloc_filter_key(std::function<bool(const Key&)> predicate, const std::map<Key, Value>& map) {
+    std::map<Key, Value> result;
+    for (const auto& pair : map) {
+        if (predicate(pair.first)) {
+            result[pair.first] = pair.second;
+        }
+    }
+    return result;
+}
+
+// filterVal :: (v -> Bool) -> Map k v -> Map k v
+template <typename Key, typename Value>
+std::map<Key, Value> morloc_filter_val(std::function<bool(const Value&)> predicate, const std::map<Key, Value>& map) {
+    std::map<Key, Value> result;
+    for (const auto& pair : map) {
+        if (predicate(pair.second)) {
+            result[pair.first] = pair.second;
+        }
+    }
+    return result;
 }
 
 template <class A>
 A morloc_at(int i, std::vector<A> xs){
     return xs[i];
-}
-
-// map_key    :: forall a b c . (a -> b)     -> [(a, c)] -> [(b, c)];
-template <class A, class B, class C>
-std::vector<std::tuple<C,B>> morloc_map_key(
-    std::function<C(A)> f,
-    std::vector<std::tuple<A,B>> xs
-){
-    std::vector<std::tuple<A,C>> ys;
-    for(std::size_t i = 0; i < xs.size(); i++){
-        ys.push_back(std::make_tuple(f(std::get<0>(xs[i])), std::get<1>(xs[i])));
-    }
-    return ys;
-}
-
-// map_val    :: forall a b c . (a -> b)     -> [(c, a)] -> [(c, b)];
-template <class A, class B, class C>
-std::vector<std::tuple<A,C>> morloc_map_val(
-    std::function<C(B)> f,
-    std::vector<std::tuple<A,B>> xs
-){
-    std::vector<std::tuple<A,C>> ys;
-    for(std::size_t i = 0; i < xs.size(); i++){
-        ys.push_back(std::make_tuple(std::get<0>(xs[i]), f(std::get<1>(xs[i]))));
-    }
-    return ys;
 }
 
 // with_fsts  :: forall a b c . ([a] -> [b]) -> [(a, c)] -> [(b, c)];
@@ -264,33 +256,33 @@ std::vector<A> morloc_join(std::vector<A> xs, std::vector<A> ys){
 // scanl1 :: forall a b . (a -> a -> a) -> [a] -> [a];
 // scanr1 :: forall a b . (a -> a -> a) -> [a] -> [a];
 
-template <class A, class B, class C>
-C morloc_add(A x, B y){
+template <class A>
+A morloc_add(A x, A y){
     return x + y;
 }
 
-template <class A, class B, class C>
-C morloc_sub(A x, B y){
+template <class A>
+A morloc_sub(A x, A y){
     return x - y;
 }
 
-template <class A, class B, class C>
-C morloc_mul(A x, B y){
+template <class A>
+A morloc_mul(A x, A y){
     return x * y;
 }
 
-template <class A, class B, class C>
-C morloc_div(A x, B y){
+template <class A>
+A morloc_div(A x, A y){
     return x / y;
 }
 
-template <class A, class B>
-B morloc_neg(A x){
+template <class A>
+A morloc_neg(A x){
     return (-1) * x;
 }
 
-template <class A, class B, class C>
-C morloc_mod(A x, B y){
+template <class A>
+A morloc_mod(A x, A y){
     return x % y;
 }
 
@@ -357,7 +349,7 @@ A morloc_ifelse(bool cond, A x, A y){
 
 // head :: [a] -> a
 template <class A>
-A morloc_head(A x
+A morloc_head(std::vector<A> x
 ){
     return x[0];
 }
