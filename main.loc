@@ -68,6 +68,8 @@ source Cpp from "core.hpp"
 source Cpp from "data.hpp"
  ( "morloc_packMap" as packMap
  , "morloc_unpackMap" as unpackMap
+ , "morloc_packUnit" as packUnit
+ , "morloc_unpackUnit" as unpackUnit
  )
 
 type Cpp (Map key val) = "std::map<$1,$2>" key val
@@ -78,3 +80,10 @@ packMap Cpp :: pack => ([key],[val]) -> "std::map<$1,$2>" key val
 
 unpackMap :: unpack => Map key val -> ([key],[val])
 unpackMap Cpp :: unpack => "std::map<$1,$2>" key val -> ([key],[val])
+
+-- why Int, Unit is the simplest enum, it stores just one value, 0
+packUnit :: pack => Int -> Unit
+packUnit Cpp :: pack => "int" -> "mlc::Unit"
+
+unpackUnit :: unpack => Unit -> Int
+unpackUnit Cpp :: unpack => "mlc::Unit" -> "int"
