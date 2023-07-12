@@ -1,5 +1,5 @@
-#ifndef __CORE_HPP__
-#define __CORE_HPP__
+#ifndef __MORLOC_CPPBASE_CORE_HPP__
+#define __MORLOC_CPPBASE_CORE_HPP__
 
 #include <vector>
 #include <algorithm>
