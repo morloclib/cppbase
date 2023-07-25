@@ -134,6 +134,19 @@ std::map<Key, NewValue> morloc_map_val(std::function<NewValue(const Value&)> tra
     return result;
 }
 
+// append :: [a] -> a -> [a]
+// WARNING: O(n)
+// What I really need hear is a linked list
+template <typename A>
+std::vector<A> morloc_append(const std::vector<A>& xs, A x){
+    std::vector<A> ys;
+    for(int i = 0; i < xs.size(); i++){
+        ys.push_back(xs[i]);
+    }
+    ys.push_back(x);
+    return ys;
+}
+
 // filterKey :: (k -> Bool) -> Map k v -> Map k v
 template <typename Key, typename Value>
 std::map<Key, Value> morloc_filter_key(std::function<bool(const Key&)> predicate, const std::map<Key, Value>& map) {

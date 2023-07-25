@@ -15,6 +15,7 @@ source Cpp from "core.hpp"
  -- higher order functions
  , "morloc_at" as at
  , "morloc_map" as map
+ , "morloc_append" as append
  , "morloc_zipWith" as zipWith
  , "morloc_fold" as fold
  , "morloc_enumerateWith" as enumerateWith
