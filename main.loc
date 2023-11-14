@@ -44,6 +44,11 @@ source Cpp from "core.hpp"
  , "morloc_unique" as unique
  , "morloc_ifelse" as ifelse
  , "morloc_head" as head
+ , "morloc_tail" as tail -- [a]_{n} -> [a]_{n-1}
+ , "morloc_init" as init -- [a]_{n>i} -> [a]_{n-i}
+ , "morloc_last" as last -- [a] -> a
+ , "morloc_take" as take -- i:Int -> [a]_{n>i} -> [a]_{n=i}
+ , "morloc_drop" as drop -- i:Int -> [a]_{n>i} -> [a]_{n-i}
  , "morloc_filter" as filter
  , "morloc_length" as length
  , "morloc_length" as lengthS

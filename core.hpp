@@ -364,7 +364,64 @@ A morloc_ifelse(bool cond, A x, A y){
 template <class A>
 A morloc_head(std::vector<A> x
 ){
+    if (x.empty()) {
+        throw std::runtime_error("Empty list in head operation");
+    }
     return x[0];
+}
+
+
+// [a]_{n} -> [a]_{n-1}
+template <class A>
+std::vector<A> morloc_tail(std::vector<A> xs) {
+    if (xs.size() == 0){
+        throw std::out_of_range("Empty list in tail operation");
+    }
+    return std::vector<A>(xs.begin() + 1, xs.end());
+}
+
+// [a] -> a
+template <class A>
+A morloc_last(std::vector<A> xs) {
+    if (xs.empty()) {
+        // Handle the case where the input vector is empty
+        throw std::out_of_range("Empty list in last operation");
+    }
+    return xs.back();
+}
+
+// i:Int -> [a]_{n>i} -> [a]_{m; m <= i}
+template <class A>
+std::vector<A> morloc_take(int i, std::vector<A> xs) {
+    if (i < 0) {
+        // Handle the case where the index 'i' is out of bounds
+        throw std::out_of_range("Index out of bounds for take operation");
+    }
+    size_t takeCount = static_cast<size_t>(i < xs.size() ? i : xs.size());
+    return std::vector<A>(xs.begin(), xs.begin() + i);
+}
+
+// i:Int -> [a]_{n; n>i} -> [a]_{m; m <= n-i}
+template <class A>
+std::vector<A> morloc_drop(int i, std::vector<A> xs) {
+    if (i > xs.size()) {
+        // Drop everything and return empty and alone
+        return std::vector<A>();
+    }
+    if (i < 0) {
+        // Handle the case where the index 'i' is out of bounds
+        throw std::out_of_range("Index out of bounds for drop operation");
+    }
+    return std::vector<A>(xs.begin() + i, xs.end());
+}
+
+//  [a]_{n>i} -> [a]_{n-i}
+template <class A>
+std::vector<A> morloc_init(std::vector<A> xs) {
+    if (xs.size() == 0){
+        throw std::out_of_range("Empty list in init operation");
+    }
+    return std::vector<A>(xs.begin(), xs.end() - 1);
 }
 
 // filter :: (a -> Bool) -> [a] -> [a]
