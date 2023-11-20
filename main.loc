@@ -12,6 +12,13 @@ source Cpp from "core.hpp"
  , "morloc_div" as div
  , "morloc_neg" as neg
  , "morloc_mod" as mod
+ -- integer arithmetic (delete when we add typeclasses)
+ , "morloc_add" as addI
+ , "morloc_sub" as subI
+ , "morloc_mul" as mulI
+ , "morloc_div" as divI
+ , "morloc_mod" as modI
+ , "morloc_neg" as negI
  -- higher order functions
  , "morloc_at" as at
  , "morloc_map" as map
