@@ -7,6 +7,7 @@
 #include <utility>
 #include <assert.h>
 #include <map>
+#include <set>
 
 
 template <class A>
@@ -339,16 +340,16 @@ std::vector<B> morloc_enumerateWith(std::function<B(A,Index)> f, std::vector<A> 
 }
 
 
-// TODO: finish this implementation! I don't have internet and can't remember
-// the methods of the C++ set type. Mutability is also a concern here.
-//
-// unique Cpp :: [a] -> [a]
 template <class A>
 std::vector<A> morloc_unique(std::vector<A> xs){
-    // create set from xs
-    // create vector from set 
-    return xs;
+    // Create a set from the input vector to get unique elements
+    std::set<A> uniqueSet(xs.begin(), xs.end());
+    // Create a vector from the set
+    std::vector<A> uniqueVector(uniqueSet.begin(), uniqueSet.end());
+    return uniqueVector;
 }
+
+
 
 // ifelse Cpp :: Bool -> a -> a
 template <class A>
@@ -360,14 +361,27 @@ A morloc_ifelse(bool cond, A x, A y){
     }
 }
 
+// template <typename Key, typename Value, typename NewKey>
+// std::map<NewKey, Value> morloc_map_key(std::function<NewKey(const Key&)> transform, const std::map<Key, Value>& map) {
+
+// branch Cpp :: (a -> Bool) -> (a -> b) -> (a -> b) -> a -> b
+template <class A, class B>
+B morloc_branch(std::function<bool(A)> cond, std::function<B(A)> f1, std::function<B(A)> f2, A x){
+    if (cond(x)) {
+        return f1(x);
+    } else {
+        return f2(x);
+    }
+}
+
 // head :: [a] -> a
 template <class A>
-A morloc_head(std::vector<A> x
+A morloc_head(std::vector<A> xs
 ){
-    if (x.empty()) {
+    if (xs.size() == 0) {
         throw std::runtime_error("Empty list in head operation");
     }
-    return x[0];
+    return xs[0];
 }
 
 
@@ -383,7 +397,7 @@ std::vector<A> morloc_tail(std::vector<A> xs) {
 // [a] -> a
 template <class A>
 A morloc_last(std::vector<A> xs) {
-    if (xs.empty()) {
+    if (xs.size() == 0) {
         // Handle the case where the input vector is empty
         throw std::out_of_range("Empty list in last operation");
     }

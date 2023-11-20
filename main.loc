@@ -43,6 +43,7 @@ source Cpp from "core.hpp"
  -- new functions for the paper case study
  , "morloc_unique" as unique
  , "morloc_ifelse" as ifelse
+ , "morloc_branch" as branch
  , "morloc_head" as head
  , "morloc_tail" as tail -- [a]_{n} -> [a]_{n-1}
  , "morloc_init" as init -- [a]_{n>i} -> [a]_{n-i}
