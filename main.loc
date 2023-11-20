@@ -62,6 +62,14 @@ source Cpp from "core.hpp"
  , "morloc_not" as not
  , "morloc_and" as and
  , "morloc_or" as or
+ -- string
+ , "morloc_show" as show
+ , "morloc_unlines" as unlines
+ , "morloc_words" as words
+ , "morloc_unwords" as unwords
+ , "morloc_paste" as paste
+ , "morloc_lines" as lines
+ , "morloc_lengthS" as lengthS
  )
 
 -------------------------------------------------------------------------------

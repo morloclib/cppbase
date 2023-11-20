@@ -489,4 +489,66 @@ bool morloc_or(bool x, bool y){
     return x || y;
 }
 
+// unlines :: [Str] -> Str
+std::string morloc_unlines(std::vector<std::string> xs){
+    std::string result;
+    for(const auto& str : xs) {
+        result += str + '\n';
+    }
+    return result;
+}
+
+// words :: Str -> [Str]
+std::vector<std::string> morloc_words(std::string x){
+    std::vector<std::string> words;
+    std::istringstream iss(x);
+    std::string word;
+    while (iss >> word) {
+        words.push_back(word);
+    }
+    return words;
+}
+
+// unwords :: [Str] -> Str
+std::string morloc_unwords(std::vector<std::string> xs){
+    std::string result;
+    if (!xs.empty()) {
+        result += xs[0];
+        for (size_t i = 1; i < xs.size(); ++i) {
+            result += ' ' + xs[i];
+        }
+    }
+    return result;
+}
+
+// paste :: Str -> [Str] -> Str
+std::string morloc_paste(std::string delimiter, std::vector<std::string> xs){
+    if (xs.size() == 0){
+      return "";
+    } else {
+      std::string result = xs[0];
+      for (size_t i = 1; i < (xs.size()); i++){
+          result = result + delimiter + xs[i]; 
+      }
+      return result;
+    }
+}
+
+// lines :: Str -> [Str]
+std::vector<std::string> morloc_lines(std::string x){
+    std::vector<std::string> lines;
+    std::istringstream iss(x);
+    std::string line;
+    while (std::getline(iss, line)) {
+        lines.push_back(line);
+    }
+    return lines;
+}
+
+// lengthS :: Str -> Int
+int morloc_lengthS(std::string x){
+    return x.length();
+}
+
+
 #endif
