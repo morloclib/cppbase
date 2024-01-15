@@ -94,18 +94,12 @@ source Cpp from "data.hpp"
  , "morloc_unpackUnit" as unpackUnit
  )
 
-type Cpp (Map key val) = "std::map<$1,$2>" key val
+type Cpp => (Map key val) = "std::map<$1,$2>" key val
 
 -- These do not need to be exported (and indeed should not be)
 packMap :: pack => ([key],[val]) -> Map key val
-packMap Cpp :: pack => ([key],[val]) -> "std::map<$1,$2>" key val
-
 unpackMap :: unpack => Map key val -> ([key],[val])
-unpackMap Cpp :: unpack => "std::map<$1,$2>" key val -> ([key],[val])
 
 -- why Int, Unit is the simplest enum, it stores just one value, 0
 packUnit :: pack => Int -> Unit
-packUnit Cpp :: pack => "int" -> "mlc::Unit"
-
 unpackUnit :: unpack => Unit -> Int
-unpackUnit Cpp :: unpack => "mlc::Unit" -> "int"
