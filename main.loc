@@ -87,19 +87,16 @@ source Cpp from "core.hpp"
 -- be exported.
 -------------------------------------------------------------------------------
 
-source Cpp from "data.hpp"
- ( "morloc_packMap" as packMap
- , "morloc_unpackMap" as unpackMap
- , "morloc_packUnit" as packUnit
- , "morloc_unpackUnit" as unpackUnit
- )
-
 type Cpp => (Map key val) = "std::map<$1,$2>" key val
 
--- These do not need to be exported (and indeed should not be)
-packMap :: pack => ([key],[val]) -> Map key val
-unpackMap :: unpack => Map key val -> ([key],[val])
+instance Packable ([key],[val]) (Map key val) where
+  source Cpp from "data.hpp"
+   ( "morloc_packMap" as pack
+   , "morloc_unpackMap" as unpack
+   )
 
--- why Int, Unit is the simplest enum, it stores just one value, 0
-packUnit :: pack => Int -> Unit
-unpackUnit :: unpack => Unit -> Int
+instance Packable (Int) Unit where
+  source Cpp from "data.hpp"
+   ( "morloc_packUnit" as pack
+   , "morloc_unpackUnit" as unpack
+   )
