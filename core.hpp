@@ -300,6 +300,14 @@ A morloc_mod(A x, A y){
     return x % y;
 }
 
+template <class A>
+std::string morloc_show(A x){
+    std::ostringstream s;
+    s << x;
+    return(s.str());
+}
+
+
 template <class A, class B>
 std::vector<B> morloc_map(std::function<B(A)> f, std::vector<A> xs){
     std::vector<B> ys(xs.size());
