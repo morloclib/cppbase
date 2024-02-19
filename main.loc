@@ -55,10 +55,6 @@ source Cpp from "core.hpp"
  , "morloc_unwords" as unwords
  , "morloc_paste" as paste
  , "morloc_lines" as lines
- -- comparators
- , "morloc_not" as not
- , "morloc_and" as and
- , "morloc_or" as or
  )
 
 
