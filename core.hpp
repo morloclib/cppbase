@@ -137,7 +137,7 @@ std::map<Key, NewValue> morloc_map_val(std::function<NewValue(const Value&)> tra
 
 // append :: [a] -> a -> [a]
 // WARNING: O(n)
-// What I really need hear is a linked list
+// What I really need here is a linked list
 template <typename A>
 std::vector<A> morloc_append(const std::vector<A>& xs, A x){
     std::vector<A> ys;
@@ -173,7 +173,7 @@ std::map<Key, Value> morloc_filter_val(std::function<bool(const Value&)> predica
 }
 
 template <class A>
-A morloc_at(int i, std::vector<A> xs){
+A morloc_at(const std::vector<A>& xs, int i){
     return xs[i];
 }
 
@@ -208,7 +208,7 @@ std::vector<std::tuple<A,C>> morloc_with_snds(
 }
 
 template <class A>
-std::vector<A> morloc_join(std::vector<A> xs, std::vector<A> ys){
+std::vector<A> morloc_join(const std::vector<A>& xs, const std::vector<A>& ys){
     std::vector<A> zs; 
     for(std::size_t i = 0; i < xs.size(); i++){
         zs.push_back(xs[i]);
@@ -309,7 +309,7 @@ std::string morloc_show(A x){
 
 
 template <class A, class B>
-std::vector<B> morloc_map(std::function<B(A)> f, std::vector<A> xs){
+std::vector<B> morloc_map(std::function<B(A)> f, const std::vector<A>& xs){
     std::vector<B> ys(xs.size());
     std::transform(xs.begin(), xs.end(), ys.begin(), f);
     return ys;
@@ -318,8 +318,8 @@ std::vector<B> morloc_map(std::function<B(A)> f, std::vector<A> xs){
 template <class A, class B, class C>
 std::vector<C> morloc_zipWith(
         std::function<C(A,B)> f,
-        std::vector<A> xs,
-        std::vector<B> ys
+        const std::vector<A>& xs,
+        const std::vector<B>& ys
     )
 {
     std::size_t N = std::min(xs.size(), ys.size());
@@ -331,7 +331,7 @@ std::vector<C> morloc_zipWith(
 }
 
 template <class A, class B>
-B morloc_fold(std::function<B(B,A)> f, B y, std::vector<A> xs){
+B morloc_fold(std::function<B(B,A)> f, B y, const std::vector<A>& xs){
     for(std::size_t i=0; i < xs.size(); i++){
         y = f(y, xs[i]);
     }
@@ -339,7 +339,7 @@ B morloc_fold(std::function<B(B,A)> f, B y, std::vector<A> xs){
 }
 
 template <class A, class B, class Index>
-std::vector<B> morloc_enumerateWith(std::function<B(A,Index)> f, std::vector<A> xs){
+std::vector<B> morloc_enumerateWith(std::function<B(A,Index)> f, const std::vector<A>& xs){
     std::vector<B> ys(xs.size());
     for(Index i = 0; i < xs.size(); i++){
        ys[i] = f(xs[i], i);  
@@ -349,7 +349,7 @@ std::vector<B> morloc_enumerateWith(std::function<B(A,Index)> f, std::vector<A> 
 
 
 template <class A>
-std::vector<A> morloc_unique(std::vector<A> xs){
+std::vector<A> morloc_unique(const std::vector<A>& xs){
     // Create a set from the input vector to get unique elements
     std::set<A> uniqueSet(xs.begin(), xs.end());
     // Create a vector from the set
@@ -384,7 +384,7 @@ B morloc_branch(std::function<bool(A)> cond, std::function<B(A)> f1, std::functi
 
 // head :: [a] -> a
 template <class A>
-A morloc_head(std::vector<A> xs
+A morloc_head(const std::vector<A>& xs
 ){
     if (xs.size() == 0) {
         throw std::runtime_error("Empty list in head operation");
@@ -395,7 +395,7 @@ A morloc_head(std::vector<A> xs
 
 // [a]_{n} -> [a]_{n-1}
 template <class A>
-std::vector<A> morloc_tail(std::vector<A> xs) {
+std::vector<A> morloc_tail(const std::vector<A>& xs) {
     if (xs.size() == 0){
         throw std::out_of_range("Empty list in tail operation");
     }
@@ -404,7 +404,7 @@ std::vector<A> morloc_tail(std::vector<A> xs) {
 
 // [a] -> a
 template <class A>
-A morloc_last(std::vector<A> xs) {
+A morloc_last(const std::vector<A>& xs) {
     if (xs.size() == 0) {
         // Handle the case where the input vector is empty
         throw std::out_of_range("Empty list in last operation");
@@ -414,7 +414,7 @@ A morloc_last(std::vector<A> xs) {
 
 // i:Int -> [a]_{n>i} -> [a]_{m; m <= i}
 template <class A>
-std::vector<A> morloc_take(int i, std::vector<A> xs) {
+std::vector<A> morloc_take(int i, const std::vector<A>& xs) {
     if (i < 0) {
         // Handle the case where the index 'i' is out of bounds
         throw std::out_of_range("Index out of bounds for take operation");
@@ -425,7 +425,7 @@ std::vector<A> morloc_take(int i, std::vector<A> xs) {
 
 // i:Int -> [a]_{n; n>i} -> [a]_{m; m <= n-i}
 template <class A>
-std::vector<A> morloc_drop(int i, std::vector<A> xs) {
+std::vector<A> morloc_drop(int i, std::vector<A>& xs) {
     if (i > xs.size()) {
         // Drop everything and return empty and alone
         return std::vector<A>();
@@ -439,7 +439,7 @@ std::vector<A> morloc_drop(int i, std::vector<A> xs) {
 
 //  [a]_{n>i} -> [a]_{n-i}
 template <class A>
-std::vector<A> morloc_init(std::vector<A> xs) {
+std::vector<A> morloc_init(const std::vector<A>& xs) {
     if (xs.size() == 0){
         throw std::out_of_range("Empty list in init operation");
     }
@@ -450,7 +450,7 @@ std::vector<A> morloc_init(std::vector<A> xs) {
 template <class A>
 std::vector<A> morloc_filter(
     std::function<bool(A)> f,
-    std::vector<A> xs
+    const std::vector<A>& xs
 ){
     std::vector<A> ys;
     for(std::size_t i = 0; i < xs.size(); i++){
@@ -512,7 +512,7 @@ bool morloc_or(bool x, bool y){
 }
 
 // unlines :: [Str] -> Str
-std::string morloc_unlines(std::vector<std::string> xs){
+std::string morloc_unlines(const std::vector<std::string> & xs){
     std::string result;
     for(const auto& str : xs) {
         result += str + '\n';
@@ -521,7 +521,7 @@ std::string morloc_unlines(std::vector<std::string> xs){
 }
 
 // words :: Str -> [Str]
-std::vector<std::string> morloc_words(std::string x){
+std::vector<std::string> morloc_words(const std::string& x){
     std::vector<std::string> words;
     std::istringstream iss(x);
     std::string word;
@@ -532,7 +532,7 @@ std::vector<std::string> morloc_words(std::string x){
 }
 
 // unwords :: [Str] -> Str
-std::string morloc_unwords(std::vector<std::string> xs){
+std::string morloc_unwords(const std::vector<std::string>& xs){
     std::string result;
     if (!xs.empty()) {
         result += xs[0];
@@ -544,7 +544,7 @@ std::string morloc_unwords(std::vector<std::string> xs){
 }
 
 // paste :: Str -> [Str] -> Str
-std::string morloc_paste(std::string delimiter, std::vector<std::string> xs){
+std::string morloc_paste(std::string delimiter, const std::vector<std::string>& xs){
     if (xs.size() == 0){
       return "";
     } else {
@@ -557,7 +557,7 @@ std::string morloc_paste(std::string delimiter, std::vector<std::string> xs){
 }
 
 // lines :: Str -> [Str]
-std::vector<std::string> morloc_lines(std::string x){
+std::vector<std::string> morloc_lines(const std::string& x){
     std::vector<std::string> lines;
     std::istringstream iss(x);
     std::string line;
