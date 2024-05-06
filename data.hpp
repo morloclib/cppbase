@@ -31,13 +31,13 @@ std::tuple<std::vector<A>,std::vector<B>> morloc_unpackMap(std::map<A,B> m){
 }
 
 // packUnit Cpp :: pack => "mlc::Unit" -> "int"
-int morloc_packUnit(mlc::Unit u){
-    return 0;
+mlc::Unit morloc_packUnit(int u){
+    return mlc::Unit();
 }
 
 // unpackUnit Cpp :: unpack => "int" -> "mlc::Unit"
-mlc::Unit morloc_unpackUnit(int x){
-    return mlc::Unit();
+int morloc_unpackUnit(mlc::Unit x){
+    return 0;
 }
 
 #endif
