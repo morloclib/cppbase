@@ -26,6 +26,7 @@ source Cpp from "core.hpp"
  , "morloc_unzip" as unzip
  , "morloc_keys" as keys
  , "morloc_vals" as vals
+ , "morloc_from_list" as fromList
  , "morloc_filter_key" as filterKey
  , "morloc_filter_val" as filterVal
  , "morloc_map_key" as mapKey

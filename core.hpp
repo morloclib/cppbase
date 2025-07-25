@@ -115,6 +115,17 @@ std::vector<Value> morloc_vals(const std::map<Key, Value>& map) {
     return result;
 }
 
+// fromList :: [(a, b)] -> Map a b
+template <typename Key, typename Value>
+std::map<Key, Value> morloc_from_list(const std::vector<std::tuple<Key, Value>>& tuples) {
+    std::map<Key, Value> result;
+    for (const auto& t : tuples) {
+        // std::get<0>(t) extracts the key, std::get<1>(t) extracts the value
+        result[std::get<0>(t)] = std::get<1>(t);
+    }
+    return result;
+}
+
 // mapKey :: (a -> a') -> Map a b -> Map a' b
 template <typename Key, typename Value, typename NewKey>
 std::map<NewKey, Value> morloc_map_key(std::function<NewKey(const Key&)> transform, const std::map<Key, Value>& map) {
